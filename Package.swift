@@ -13,6 +13,7 @@ let package = Package(
             name: "ChatXPN",
             targets: ["ChatXPN"]),
     ], dependencies: [
+        .package(url: "https://github.com/aheze/Popovers.git", .upToNextMajor(from: "1.3.2")),
         .package(url: "https://github.com/firebase/firebase-ios-sdk.git", .upToNextMajor(from: "10.4.0")),
     ],
     targets: [
@@ -21,6 +22,7 @@ let package = Package(
         .target(
             name: "ChatXPN",
         dependencies: [
+            "Popovers",
             .product(name: "FirebaseAuth", package: "firebase-ios-sdk"),
             .product(name: "FirebaseAnalytics", package: "firebase-ios-sdk"),
             .product(name: "FirebaseFirestore", package: "firebase-ios-sdk"),
