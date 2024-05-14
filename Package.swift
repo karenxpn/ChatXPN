@@ -18,6 +18,7 @@ let package = Package(
         .package(url: "https://github.com/firebase/firebase-ios-sdk.git", .upToNextMajor(from: "10.4.0")),
         .package(url: "https://github.com/huynguyencong/DataCache.git", branch: "master"),
         .package(url: "https://github.com/SDWebImage/SDWebImageSwiftUI.git", .upToNextMajor(from: "3.0.2")),
+        .package(url: "https://github.com/karenxpn/CameraXPN.git", branch: "main"),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -29,6 +30,7 @@ let package = Package(
             "NotraAuth",
             "DataCache",
             "SDWebImageSwiftUI",
+            "CameraXPN",
             .product(name: "FirebaseAuth", package: "firebase-ios-sdk"),
             .product(name: "FirebaseAnalytics", package: "firebase-ios-sdk"),
             .product(name: "FirebaseFirestore", package: "firebase-ios-sdk"),
