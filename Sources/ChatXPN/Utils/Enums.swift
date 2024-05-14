@@ -70,3 +70,44 @@ enum MessageStatus : RawRepresentable, CaseIterable, Codable, Equatable, Hashabl
         }
     }
 }
+
+enum ReactionAction {
+    case remove, react
+}
+
+enum Paths : RawRepresentable, CaseIterable, Codable {
+    
+    typealias RawValue = String
+    
+    
+    case users
+    case userBalance
+    case documents
+    case chats
+    case messages
+    case unknown(RawValue)
+    
+    static let allCases: AllCases = [
+        .users,
+        .userBalance,
+        .documents,
+        .chats,
+        .messages
+    ]
+    
+    init(rawValue: RawValue) {
+        self = Self.allCases.first{ $0.rawValue == rawValue }
+        ?? .unknown(rawValue)
+    }
+    
+    var rawValue: RawValue {
+        switch self {
+        case .userBalance                       : return "user_balance"
+        case .users                             : return "users"
+        case .documents                         : return "documents"
+        case .chats                             : return "chats"
+        case .messages                          : return "messages"
+        case let .unknown(value)                : return value
+        }
+    }
+}

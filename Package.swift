@@ -13,8 +13,12 @@ let package = Package(
             name: "ChatXPN",
             targets: ["ChatXPN"]),
     ], dependencies: [
+        .package(url: "https://github.com/SignTranslate/NotraAuth.git", branch: "main"),
         .package(url: "https://github.com/aheze/Popovers.git", .upToNextMajor(from: "1.3.2")),
         .package(url: "https://github.com/firebase/firebase-ios-sdk.git", .upToNextMajor(from: "10.4.0")),
+        .package(url: "https://github.com/huynguyencong/DataCache.git", branch: "master"),
+        .package(url: "https://github.com/SDWebImage/SDWebImageSwiftUI.git", .upToNextMajor(from: "3.0.2")),
+        .package(url: "https://github.com/karenxpn/CameraXPN.git", branch: "main"),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -23,13 +27,15 @@ let package = Package(
             name: "ChatXPN",
         dependencies: [
             "Popovers",
+            "NotraAuth",
+            "DataCache",
+            "SDWebImageSwiftUI",
+            "CameraXPN",
             .product(name: "FirebaseAuth", package: "firebase-ios-sdk"),
             .product(name: "FirebaseAnalytics", package: "firebase-ios-sdk"),
             .product(name: "FirebaseFirestore", package: "firebase-ios-sdk"),
             .product(name: "FirebaseFirestoreSwift", package: "firebase-ios-sdk"),
             .product(name: "FirebaseStorage", package: "firebase-ios-sdk"),
-
-
         ]),
         .testTarget(
             name: "ChatXPNTests",
