@@ -9,8 +9,9 @@ import SwiftUI
 import NotraAuth
 
 struct TextMessageContent: View {
+    @Environment(\.colorScheme) var colorScheme
     let message: MessageViewModel
-    
+        
     var body: some View {
         
         if message.content.isSingleEmoji {
@@ -42,7 +43,9 @@ struct TextMessageContent: View {
                 
                 HStack(alignment: .lastTextBaseline, spacing: 8, content: {
                     if message.status == .deleted {
-                        TextHelper(text: message.content, color: Color("superLightGray", bundle: .module))
+                        let receivedDeletedMessageColor: Color = colorScheme == .dark ? .white : .black
+                        TextHelper(text: message.content,
+                                   color: message.received ? receivedDeletedMessageColor : Color("superLightGray", bundle: .module))
                     } else {
                         TextHelper(text: message.content, color: !message.received ? .white : .primary)
                     }
