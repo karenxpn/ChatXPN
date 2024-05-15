@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  ChatViewModel.swift
 //  
 //
 //  Created by Karen Mirakyan on 15.05.24.

@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  RoomViewModel.swift
 //
 //
 //  Created by Karen Mirakyan on 15.05.24.
