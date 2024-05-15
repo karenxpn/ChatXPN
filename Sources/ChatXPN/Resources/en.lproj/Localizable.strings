@@ -1,0 +1,22 @@
+/* 
+  Localizable.strings
+  
+
+  Created by Karen Mirakyan on 15.05.24.
+  
+*/
+
+"justNow" = "Just Now";
+"chats" = "Chats";
+"messageBarPlaceholder" = "Write your message here...";
+"loadFromGallery" = "Upload from Gallery";
+"openCamera" = "Open Camera";
+"mediaContent" = "Media Content";
+"copy" = "Copy";
+"reply" = "Reply";
+"openDocuments" = "Open Documents";
+"pdfFile" = "PDF File";
+"error" = "Error";
+"ok" = "OK";
+"files" = "Files";
+"edit" = "Edit";

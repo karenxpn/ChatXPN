@@ -25,18 +25,19 @@ let package = Package(
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
             name: "ChatXPN",
-        dependencies: [
-            "Popovers",
-            "NotraAuth",
-            "DataCache",
-            "SDWebImageSwiftUI",
-            "CameraXPN",
-            .product(name: "FirebaseAuth", package: "firebase-ios-sdk"),
-            .product(name: "FirebaseAnalytics", package: "firebase-ios-sdk"),
-            .product(name: "FirebaseFirestore", package: "firebase-ios-sdk"),
-            .product(name: "FirebaseFirestoreSwift", package: "firebase-ios-sdk"),
-            .product(name: "FirebaseStorage", package: "firebase-ios-sdk"),
-        ]),
+            dependencies: [
+                "Popovers",
+                "NotraAuth",
+                "DataCache",
+                "SDWebImageSwiftUI",
+                "CameraXPN",
+                .product(name: "FirebaseAuth", package: "firebase-ios-sdk"),
+                .product(name: "FirebaseAnalytics", package: "firebase-ios-sdk"),
+                .product(name: "FirebaseFirestore", package: "firebase-ios-sdk"),
+                .product(name: "FirebaseFirestoreSwift", package: "firebase-ios-sdk"),
+                .product(name: "FirebaseStorage", package: "firebase-ios-sdk"),
+            ],
+            resources: [.process("Resources")]),
         .testTarget(
             name: "ChatXPNTests",
             dependencies: ["ChatXPN"]),

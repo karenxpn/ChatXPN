@@ -6,7 +6,7 @@
 //
 
 import Foundation
-enum ChatPath: Equatable, Hashable {
+public enum ChatPath: Equatable, Hashable {
     case chat
     case chatRoom(chat: ChatModelViewModel)
 }
