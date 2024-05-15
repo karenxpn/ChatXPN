@@ -4,7 +4,7 @@
 import SwiftUI
 
 public struct ChatXPN: View {
-    @StateObject private var viewRouter = ChatViewRouter()
+    @EnvironmentObject private var viewRouter: ChatViewRouter
     public init() { }
     
     public var body: some View {

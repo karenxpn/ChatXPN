@@ -36,14 +36,14 @@ struct ChatUser: Identifiable, Codable, Equatable, Hashable {
 }
 
 
-struct ChatModelViewModel: Identifiable, Equatable, Hashable {
+public struct ChatModelViewModel: Identifiable, Equatable, Hashable {
     var chat: ChatModel
     init(chat: ChatModel) {
         self.chat = chat
     }
     
-    var id: String                      { self.chat.id ?? UUID().uuidString }
-    var image: String                   { self.chat.image }
+    public var id: String   { self.chat.id ?? UUID().uuidString }
+    var image: String       { self.chat.image }
     
     var name: String {
         if let user = self.chat.users.first(where: {$0.id != Auth.auth().currentUser?.uid }) { return user.name }
