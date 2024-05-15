@@ -14,6 +14,7 @@ struct Chat: View {
     var body: some View {
         ChatList()
             .navigationTitle("")
+            .navigationBarTitleDisplayMode(.inline)
             .environmentObject(chatVM)
             .task {
                 chatVM.getChats()
