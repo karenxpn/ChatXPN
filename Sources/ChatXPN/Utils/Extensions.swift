@@ -71,7 +71,7 @@ extension Date {
         formatter.unitsStyle = .short
         let string = formatter.localizedString(for: self, relativeTo: currentDate)
 
-        return currentDate.millisecondsSince1970 - self.millisecondsSince1970 < 3000 ? NSLocalizedString("justNow", comment: "") : string
+        return currentDate.millisecondsSince1970 - self.millisecondsSince1970 < 3000 ? NSLocalizedString("justNow", bundle: .module, comment: "") : string
     }
 }
 

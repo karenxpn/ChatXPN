@@ -34,7 +34,7 @@ struct MessageBar: View {
                         .padding([.leading, .vertical], 20)
                 }
                 
-                TextField(NSLocalizedString("messageBarPlaceholder", comment: ""), text: $roomVM.message, axis: .vertical)
+                TextField(NSLocalizedString("messageBarPlaceholder", bundle: .module, comment: ""), text: $roomVM.message, axis: .vertical)
                     .lineLimit(3)
                     .foregroundColor(.primary)
                     .font(.custom("SF Pro Text", size: 13))
@@ -58,19 +58,19 @@ struct MessageBar: View {
             Button {
                 openGallery.toggle()
             } label: {
-                Text(NSLocalizedString("loadFromGallery", comment: ""))
+                Text(NSLocalizedString("loadFromGallery", bundle: .module, comment: ""))
             }
             
             Button {
                 openCamera.toggle()
             } label: {
-                Text(NSLocalizedString("openCamera", comment: ""))
+                Text(NSLocalizedString("openCamera", bundle: .module, comment: ""))
             }
             
             Button {
                 openFileImporter.toggle()
             } label: {
-                Text(NSLocalizedString("openDocuments", comment: ""))
+                Text(NSLocalizedString("openDocuments", bundle: .module, comment: ""))
             }
         }.sheet(isPresented: $openGallery) {
             MessageGallery { content_type, content in
@@ -83,7 +83,7 @@ struct MessageBar: View {
                 //                roomVM.sendMessage(messageType: url.absoluteString.hasSuffix(".mov") ? .video : .photo)
             }, font: .custom("Inter-SemiBold", size: 14), permissionMessage: "enableAccessForBoth",
                       recordVideoButtonColor: .primary,
-                      useMediaContent: NSLocalizedString("useThisMedia", comment: ""), videoAllowed: false)
+                      useMediaContent: NSLocalizedString("useThisMedia", bundle: .module, comment: ""), videoAllowed: false)
             
         }).fileImporter(isPresented: $openFileImporter, allowedContentTypes: [.pdf], allowsMultipleSelection: false) { result in
             switch result {

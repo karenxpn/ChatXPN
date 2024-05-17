@@ -20,11 +20,11 @@ struct Chat: View {
                 chatVM.getChats()
             }.toolbar {
                 ToolbarItem(placement: .principal) {
-                    TextHelper(text: NSLocalizedString("chats", comment: ""), fontSize: 20)
+                    TextHelper(text: NSLocalizedString("chats", bundle: .module, comment: ""), fontSize: 20)
                         .fontWeight(.bold)
                 }
-            }.alert(NSLocalizedString("error", comment: ""), isPresented: $chatVM.showAlert, actions: {
-                Button(NSLocalizedString("ok", comment: ""), role: .cancel) { }
+            }.alert(NSLocalizedString("error", bundle: .module, comment: ""), isPresented: $chatVM.showAlert, actions: {
+                Button(NSLocalizedString("ok", bundle: .module, comment: ""), role: .cancel) { }
             }, message: {
                 Text(chatVM.alertMessage)
             })

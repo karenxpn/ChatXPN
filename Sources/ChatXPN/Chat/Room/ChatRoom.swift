@@ -42,8 +42,8 @@ struct ChatRoom: View {
                     .kerning(0.56)
                     .accessibilityAddTraits(.isHeader)
                 }
-            }.alert(NSLocalizedString("error", comment: ""), isPresented: $roomVM.showAlert, actions: {
-                Button(NSLocalizedString("gotIt", comment: ""), role: .cancel) { }
+            }.alert(NSLocalizedString("error", bundle: .module, comment: ""), isPresented: $roomVM.showAlert, actions: {
+                Button(NSLocalizedString("gotIt", bundle: .module, comment: ""), role: .cancel) { }
             }, message: {
                 Text(roomVM.alertMessage)
             })

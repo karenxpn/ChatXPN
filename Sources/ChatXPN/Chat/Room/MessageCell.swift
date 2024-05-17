@@ -83,14 +83,14 @@ struct MessageCell: View {
                     }
                 ) {
                     VStack(alignment: .leading, spacing: 0) {
-                        MenuButtonsHelper(label: NSLocalizedString("reply", comment: ""), icon: "arrowshape.turn.up.left", role: .cancel) {
+                        MenuButtonsHelper(label: NSLocalizedString("reply", bundle: .module, comment: ""), icon: "arrowshape.turn.up.left", role: .cancel) {
                             roomVM.replyMessage = message
                             showPopOver = false
                         }
                         Divider()
                         
                         if message.type == .text {
-                            MenuButtonsHelper(label: NSLocalizedString("copy", comment: ""), icon: "doc.on.doc", role: .cancel) {
+                            MenuButtonsHelper(label: NSLocalizedString("copy", bundle: .module, comment: ""), icon: "doc.on.doc", role: .cancel) {
                                 UIPasteboard.general.string = message.content
                                 showPopOver = false
                             }
@@ -98,7 +98,7 @@ struct MessageCell: View {
                         }
                         
                         if !message.received {
-                            MenuButtonsHelper(label: NSLocalizedString("delete", comment: ""), icon: "trash", role: .destructive) {
+                            MenuButtonsHelper(label: NSLocalizedString("delete", bundle: .module, comment: ""), icon: "trash", role: .destructive) {
                                 roomVM.deleteMessage(messageID: message.id)
                                 showPopOver = false
                             }
