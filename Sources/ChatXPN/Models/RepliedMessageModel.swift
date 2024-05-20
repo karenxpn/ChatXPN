@@ -6,7 +6,7 @@
 //
 
 import Foundation
-struct RepliedMessageModel: Codable {
+public struct RepliedMessageModel: Codable {
     var message: String
     var type: MessageType
     var name: String

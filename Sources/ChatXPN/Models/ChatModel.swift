@@ -11,8 +11,8 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 import FirebaseAuth
 
-struct ChatModel: Identifiable, Codable, Equatable, Hashable {
-    @DocumentID var id: String?
+public struct ChatModel: Identifiable, Codable, Equatable, Hashable {
+    @DocumentID public var id: String?
     var users: [ChatUser]
     var lastMessage: ChatMessagePreview
     var image: String

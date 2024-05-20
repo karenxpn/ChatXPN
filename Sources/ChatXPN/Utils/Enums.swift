@@ -7,27 +7,27 @@
 
 import Foundation
 
-enum MessageType : RawRepresentable, CaseIterable, Codable, Equatable, Hashable {
+public enum MessageType : RawRepresentable, CaseIterable, Codable, Equatable, Hashable {
     
-    typealias RawValue = String
+    public typealias RawValue = String
     
     case text
     case photo
     case file
     case unknown(RawValue)
     
-    static let allCases: AllCases = [
+    public static let allCases: AllCases = [
         .text,
         .photo,
         .file,
     ]
     
-    init(rawValue: RawValue) {
+    public init(rawValue: RawValue) {
         self = Self.allCases.first{ $0.rawValue == rawValue }
         ?? .unknown(rawValue)
     }
     
-    var rawValue: RawValue {
+    public var rawValue: RawValue {
         switch self {
         case .text                  : return "text"
         case .photo                 : return "photo"
@@ -38,9 +38,9 @@ enum MessageType : RawRepresentable, CaseIterable, Codable, Equatable, Hashable 
 }
 
 
-enum MessageStatus : RawRepresentable, CaseIterable, Codable, Equatable, Hashable {
+public enum MessageStatus : RawRepresentable, CaseIterable, Codable, Equatable, Hashable {
     
-    typealias RawValue = String
+    public typealias RawValue = String
     
     case pending
     case sent
@@ -48,19 +48,19 @@ enum MessageStatus : RawRepresentable, CaseIterable, Codable, Equatable, Hashabl
     case deleted
     case unknown(RawValue)
     
-    static let allCases: AllCases = [
+    public static let allCases: AllCases = [
         .pending,
         .sent,
         .read,
         .deleted
     ]
     
-    init(rawValue: RawValue) {
+    public init(rawValue: RawValue) {
         self = Self.allCases.first{ $0.rawValue == rawValue }
         ?? .unknown(rawValue)
     }
     
-    var rawValue: RawValue {
+    public var rawValue: RawValue {
         switch self {
         case .pending               : return "pending"
         case .sent                  : return "sent"
@@ -71,7 +71,7 @@ enum MessageStatus : RawRepresentable, CaseIterable, Codable, Equatable, Hashabl
     }
 }
 
-enum ReactionAction {
+public enum ReactionAction {
     case remove, react
 }
 

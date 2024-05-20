@@ -10,8 +10,8 @@ import FirebaseFirestoreSwift
 import Firebase
 import FirebaseAuth
 
-struct MessageModel: Codable {
-    @DocumentID var id: String?
+public struct MessageModel: Codable {
+    @DocumentID public var id: String?
     var createdAt: Timestamp
     var type: MessageType
     var content: String
@@ -23,7 +23,7 @@ struct MessageModel: Codable {
     var senderName: String?
 }
 
-struct ReactionModel: Codable, Equatable {
+public struct ReactionModel: Codable, Equatable {
     var userId: String
     var reaction: String
 }

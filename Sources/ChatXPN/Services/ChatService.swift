@@ -15,7 +15,7 @@ import SwiftUI
 import PDFKit
 
 
-protocol ChatServiceProtocol {
+public protocol ChatServiceProtocol {
     func fetchChatList(completion: @escaping (Result<[ChatModel], Error>) -> ())
     func fetchMessages(chatID: String, lastMessage: QueryDocumentSnapshot?, completion: @escaping(Result<([MessageModel], QueryDocumentSnapshot?), Error>) -> ())
     
@@ -28,12 +28,14 @@ protocol ChatServiceProtocol {
     func editMessage(chatID: String, messageID: String, message: String, status: MessageStatus) async -> Result<Void, Error>
     func sendReaction(chatID: String, messageID: String, reaction: ReactionModel, action: ReactionAction) async -> Result<Void, Error>
     func markMessageAsRead(chatID: String, messageID: String) async -> Result<Void, Error>
+    func checkUnreadMessage(completion: @escaping (Bool) -> ())
+
     
     func pdfThumbnail(url: URL?, media: Data?, width: CGFloat) async -> UIImage?
 }
 
-class ChatService {
-    static let shared: ChatServiceProtocol = ChatService()
+public class ChatService {
+    public static let shared: ChatServiceProtocol = ChatService()
     let db = Firestore.firestore()
     let storageRef = Storage.storage().reference()
     
@@ -42,7 +44,39 @@ class ChatService {
 
 extension ChatService: ChatServiceProtocol {
     
-    func pdfThumbnail(url: URL?, media: Data?, width: CGFloat) async -> UIImage? {
+    public func checkUnreadMessage(completion: @escaping (Bool) -> ()) {
+        guard let userID = Auth.auth().currentUser?.uid else {
+            return
+        }
+        
+        db.collection(Paths.chats.rawValue)
+            .whereField("uids", arrayContains: userID)
+            .addSnapshotListener { snapshot, error in
+                if error != nil    { return }
+                
+                guard snapshot?.documents.last != nil else {
+                    DispatchQueue.main.async { completion(false) }
+                    return
+                }
+                
+                var hasUnreadMessages = false
+
+                for document in snapshot!.documents {
+                    if let data = document.data() as? [String: Any],
+                        let lastMessage = data["lastMessage"] as? [String: Any],
+                        let seenBy = lastMessage["seenBy"] as? [String] {
+                         if !seenBy.contains(userID) {
+                             hasUnreadMessages = true
+                             break
+                         }
+                     }
+                }
+                
+                DispatchQueue.main.async { completion(hasUnreadMessages) }
+            }
+    }
+    
+    public func pdfThumbnail(url: URL?, media: Data?, width: CGFloat) async -> UIImage? {
         do {
             
             if let url, let image = DataCache.instance.readImage(forKey: url.absoluteString + "thumbnail") {
@@ -87,7 +121,7 @@ extension ChatService: ChatServiceProtocol {
     }
 
     
-    func markMessageAsRead(chatID: String, messageID: String) async -> Result<Void, Error> {
+    public func markMessageAsRead(chatID: String, messageID: String) async -> Result<Void, Error> {
         return await APIHelper.shared.voidRequest(action: {
             
             guard let userID = Auth.auth().currentUser?.uid else {
@@ -115,7 +149,7 @@ extension ChatService: ChatServiceProtocol {
         })
     }
     
-    func sendReaction(chatID: String, messageID: String, reaction: ReactionModel, action: ReactionAction) async -> Result<Void, Error> {
+    public func sendReaction(chatID: String, messageID: String, reaction: ReactionModel, action: ReactionAction) async -> Result<Void, Error> {
         return await APIHelper.shared.voidRequest {
             try await db.collection(Paths.chats.rawValue)
                 .document(chatID)
@@ -129,7 +163,7 @@ extension ChatService: ChatServiceProtocol {
         }
     }
     
-    func editMessage(chatID: String, messageID: String, message: String, status: MessageStatus) async -> Result<Void, Error> {
+    public func editMessage(chatID: String, messageID: String, message: String, status: MessageStatus) async -> Result<Void, Error> {
         
         return await APIHelper.shared.voidRequest {
             let _ = try await db.collection(Paths.chats.rawValue)
@@ -143,7 +177,7 @@ extension ChatService: ChatServiceProtocol {
         }
     }
     
-    func fetchMessages(chatID: String, lastMessage: QueryDocumentSnapshot?, completion: @escaping (Result<([MessageModel], QueryDocumentSnapshot?), Error>) -> ()) {
+    public func fetchMessages(chatID: String, lastMessage: QueryDocumentSnapshot?, completion: @escaping (Result<([MessageModel], QueryDocumentSnapshot?), Error>) -> ()) {
         
         guard let _ = Auth.auth().currentUser?.uid else {
             DispatchQueue.main.async {
@@ -188,7 +222,7 @@ extension ChatService: ChatServiceProtocol {
     }
     
     
-    func uploadMedia(media: Data, type: MessageType) async -> Result<String, Error> {
+    public func uploadMedia(media: Data, type: MessageType) async -> Result<String, Error> {
         do {
             var fileExtension = ""
             if type == .photo       { fileExtension = "jpg" }
@@ -211,7 +245,7 @@ extension ChatService: ChatServiceProtocol {
         }
     }
     
-    func sendMessage(chatID: String, type: MessageType, content: String, repliedTo: RepliedMessageModel?) async -> Result<Void, any Error> {
+    public func sendMessage(chatID: String, type: MessageType, content: String, repliedTo: RepliedMessageModel?) async -> Result<Void, any Error> {
         return await APIHelper.shared.voidRequest {
             guard let userID = Auth.auth().currentUser?.uid else {
                 throw CustomErrors.userNotFound
@@ -249,7 +283,7 @@ extension ChatService: ChatServiceProtocol {
         }
     }
     
-    func fetchChatList(completion: @escaping (Result<[ChatModel], any Error>) -> ()) {
+    public func fetchChatList(completion: @escaping (Result<[ChatModel], any Error>) -> ()) {
         
         guard let userID = Auth.auth().currentUser?.uid else {
             DispatchQueue.main.async {

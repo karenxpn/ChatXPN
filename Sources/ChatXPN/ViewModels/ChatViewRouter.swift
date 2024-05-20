@@ -11,6 +11,12 @@ import NotraAuth
 
 public class ChatViewRouter: AlertViewModel, ObservableObject {
     @Published var chatPath = [ChatPath]()
+    @Published var hasUnreadMessage: Bool = false
+    
+    var manager: ChatServiceProtocol
+    public init(manager: ChatServiceProtocol = ChatService.shared) {
+        self.manager = manager
+    }
     
     // add new view
     public func pushChatPath(_ page: ChatPath)        { chatPath.append(page) }
@@ -29,6 +35,12 @@ public class ChatViewRouter: AlertViewModel, ObservableObject {
             Chat()
         case .chatRoom(let chat):
             ChatRoom(chat: chat)
+        }
+    }
+    
+    @MainActor public func checkUnreadMessages() {
+        manager.checkUnreadMessage { hasMessage in
+            self.hasUnreadMessage = hasMessage
         }
     }
 }
