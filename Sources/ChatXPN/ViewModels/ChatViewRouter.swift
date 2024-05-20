@@ -11,7 +11,7 @@ import NotraAuth
 
 public class ChatViewRouter: AlertViewModel, ObservableObject {
     @Published var chatPath = [ChatPath]()
-    @Published var hasUnreadMessage: Bool = false
+    @Published public var hasUnreadMessage: Bool = false
     
     var manager: ChatServiceProtocol
     public init(manager: ChatServiceProtocol = ChatService.shared) {
