@@ -26,8 +26,24 @@ struct MessageBar: View {
             }
             
             HStack {
-                Button {
-                    openAttachment.toggle()
+                Menu {
+                    Button {
+                        openGallery.toggle()
+                    } label: {
+                        Text(NSLocalizedString("loadFromGallery", bundle: .module, comment: ""))
+                    }
+                    
+                    Button {
+                        openCamera.toggle()
+                    } label: {
+                        Text(NSLocalizedString("openCamera", bundle: .module, comment: ""))
+                    }
+                    
+                    Button {
+                        openFileImporter.toggle()
+                    } label: {
+                        Text(NSLocalizedString("openDocuments", bundle: .module, comment: ""))
+                    }
                 } label: {
                     Image("icon_attachment", bundle: .module)
                         .tint(.primary)
@@ -53,25 +69,6 @@ struct MessageBar: View {
                 .background(Color("messageBar", bundle: .module))
                 .cornerRadius(roomVM.replyMessage != nil ? 0 : 35, corners: [.topLeft, .topRight])
                 .shadow(color: roomVM.replyMessage != nil ? Color.clear : Color.gray.opacity(0.1), radius: 2, x: 0, y: -3)
-        }
-        .confirmationDialog("", isPresented: $openAttachment, titleVisibility: .hidden) {
-            Button {
-                openGallery.toggle()
-            } label: {
-                Text(NSLocalizedString("loadFromGallery", bundle: .module, comment: ""))
-            }
-            
-            Button {
-                openCamera.toggle()
-            } label: {
-                Text(NSLocalizedString("openCamera", bundle: .module, comment: ""))
-            }
-            
-            Button {
-                openFileImporter.toggle()
-            } label: {
-                Text(NSLocalizedString("openDocuments", bundle: .module, comment: ""))
-            }
         }.sheet(isPresented: $openGallery) {
             MessageGallery { content_type, content in
                 roomVM.media = content
