@@ -24,7 +24,7 @@ struct MessageBar: View {
                 BarMessagePreview(message: $roomVM.replyMessage)
             }
             
-            HStack {
+            HStack(alignment: .top) {
                 Menu {
                     Button {
                         openGallery.toggle()
