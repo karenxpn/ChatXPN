@@ -12,7 +12,6 @@ import PDFKit
 struct MessageBar: View {
     @EnvironmentObject var roomVM: RoomViewModel
     
-    @State private var openAttachment: Bool = false
     @State private var openGallery: Bool = false
     @State private var openCamera: Bool = false
     @State private var openFileImporter: Bool = false
