@@ -24,29 +24,29 @@ struct MessageBar: View {
                 BarMessagePreview(message: $roomVM.replyMessage)
             }
             
-            HStack(alignment: .top) {
+            HStack {
                 Menu {
                     Button {
                         openGallery.toggle()
                     } label: {
-                        Text(NSLocalizedString("loadFromGallery", bundle: .module, comment: ""))
+                        Label(NSLocalizedString("loadFromGallery", bundle: .module, comment: ""), systemImage: "photo")
                     }
                     
                     Button {
                         openCamera.toggle()
                     } label: {
-                        Text(NSLocalizedString("openCamera", bundle: .module, comment: ""))
+                        Label(NSLocalizedString("openCamera", bundle: .module, comment: ""), systemImage: "camera")
                     }
                     
                     Button {
                         openFileImporter.toggle()
                     } label: {
-                        Text(NSLocalizedString("openDocuments", bundle: .module, comment: ""))
+                        Label(NSLocalizedString("openDocuments", bundle: .module, comment: ""), systemImage: "doc.on.doc")
                     }
                 } label: {
                     Image("icon_attachment", bundle: .module)
                         .tint(.primary)
-                        .padding([.leading, .vertical], 20)
+                        .padding([.leading], 20)
                 }
                 
                 TextField(NSLocalizedString("messageBarPlaceholder", bundle: .module, comment: ""), text: $roomVM.message, axis: .vertical)
