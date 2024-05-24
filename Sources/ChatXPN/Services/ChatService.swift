@@ -29,6 +29,8 @@ public protocol ChatServiceProtocol {
     func sendReaction(chatID: String, messageID: String, reaction: ReactionModel, action: ReactionAction) async -> Result<Void, Error>
     func markMessageAsRead(chatID: String, messageID: String) async -> Result<Void, Error>
     func checkUnreadMessage(completion: @escaping (Bool) -> ())
+    
+    func createChat(documentID: String, message: String) async -> Result<Void, Error>
 
     
     func pdfThumbnail(url: URL?, media: Data?, width: CGFloat) async -> UIImage?
@@ -43,6 +45,53 @@ public class ChatService {
 }
 
 extension ChatService: ChatServiceProtocol {
+    public func createChat(documentID: String, message: String) async -> Result<Void, any Error> {
+        return await APIHelper.shared.voidRequest {
+            guard let userID = Auth.auth().currentUser?.uid else {
+                throw CustomErrors.userNotFound
+            }
+            
+            let admin = ChatUser(id: userID, name: Auth.auth().currentUser?.displayName ?? "Admin", isAdmin: true)
+            let extractedInfo = try await extractUserInfoFromDoc(docID: documentID)
+            let user = extractedInfo.0
+            
+            try await db.collection(Paths.chats.rawValue).document(documentID).setData([
+                "image": extractedInfo.1 ?? "",
+                "uids": [admin.id, user.id],
+                "users": [Firestore.Encoder().encode(admin), Firestore.Encoder().encode(user)]
+            ], merge: true)
+            
+            let message = MessageModel(createdAt: Timestamp(date: Date().toGlobalTime()),
+                                       type: .text,
+                                       content: message,
+                                       sentBy: userID,
+                                       seenBy: [userID],
+                                       status: .sent,
+                                       repliedTo: nil,
+                                       reactions: [],
+                                       senderName: Auth.auth().currentUser?.displayName)
+            
+            let sentMessage = try await db
+                .collection(Paths.chats.rawValue)
+                .document(documentID)
+                .collection(Paths.messages.rawValue)
+                .addDocument(data: Firestore.Encoder().encode(message))
+        }
+    }
+    
+    func extractUserInfoFromDoc(docID: String) async throws -> (ChatUser, String?) {
+        let document = try await db.collection(Paths.documents.rawValue).document(docID).getDocument().data()
+        guard let document else { throw CustomErrors.createErrorWithMessage("Error getting user data") }
+        
+        guard let userID = document["userID"] as? String else { throw CustomErrors.createErrorWithMessage("Error parsing user data") }
+        let user = try await db.collection(Paths.users.rawValue).document(userID).getDocument().data()
+        
+        guard let user else { throw CustomErrors.createErrorWithMessage("Error parsing user data") }
+        let userName = user["name"] as? String
+        
+        return (ChatUser(id: userID, name: userName ?? "User", isAdmin: false), document["image"] as? String)
+    }
+    
     
     public func checkUnreadMessage(completion: @escaping (Bool) -> ()) {
         guard let userID = Auth.auth().currentUser?.uid else {
