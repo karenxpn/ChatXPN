@@ -61,21 +61,13 @@ extension ChatService: ChatServiceProtocol {
                 "users": [Firestore.Encoder().encode(admin), Firestore.Encoder().encode(user)]
             ], merge: true)
             
-            let message = MessageModel(createdAt: Timestamp(date: Date().toGlobalTime()),
-                                       type: .text,
-                                       content: message,
-                                       sentBy: userID,
-                                       seenBy: [userID],
-                                       status: .sent,
-                                       repliedTo: nil,
-                                       reactions: [],
-                                       senderName: Auth.auth().currentUser?.displayName)
-            
-            let sentMessage = try await db
-                .collection(Paths.chats.rawValue)
-                .document(documentID)
-                .collection(Paths.messages.rawValue)
-                .addDocument(data: Firestore.Encoder().encode(message))
+            let sentMessage = await self.sendMessage(chatID: documentID, type: .text, content: message, repliedTo: nil)
+            switch sentMessage {
+            case .failure(let error):
+                throw error
+            case .success(()):
+                break
+            }
         }
     }
     
