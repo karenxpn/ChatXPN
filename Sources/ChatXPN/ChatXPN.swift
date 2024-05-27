@@ -5,6 +5,8 @@ import SwiftUI
 
 public struct ChatXPN: View {
     @EnvironmentObject private var viewRouter: ChatViewRouter
+    @Environment(\.dismiss) var dismiss
+
     let chat: ChatModelViewModel?
     
     public init(chat: ChatModelViewModel? = nil) {
@@ -14,7 +16,16 @@ public struct ChatXPN: View {
     public var body: some View {
         NavigationStack(path: $viewRouter.chatPath) {
             if let chat {
-                Text ( "Chat here" )
+                ChatRoom(chat: chat)
+                    .toolbar(content: {
+                        ToolbarItem(placement: .topBarLeading) {
+                            Button {
+                                dismiss()
+                            } label: {
+                                Image("close_popup")
+                            }
+                        }
+                    })
             } else {
                 Chat()
                     .navigationDestination(for: ChatPath.self) { page in
