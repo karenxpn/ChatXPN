@@ -32,6 +32,7 @@ public protocol ChatServiceProtocol {
     
     func createChat(documentID: String, message: String) async -> Result<Void, Error>
     func getChatByID(chatID: String) async -> Result<ChatModel, Error>
+    func checkChatExistence(chatID: String) async -> Result<Bool, Error>
 
     
     func pdfThumbnail(url: URL?, media: Data?, width: CGFloat) async -> UIImage?
@@ -46,6 +47,19 @@ public class ChatService {
 }
 
 extension ChatService: ChatServiceProtocol {
+    public func checkChatExistence(chatID: String) async -> Result<Bool, any Error> {
+        do {
+            let chat = try await db.collection(Paths.chats.rawValue)
+                .document(chatID)
+                .getDocument()
+                .exists
+            
+            return .success(chat)
+        } catch {
+            return .failure(error)
+        }
+    }
+    
     public func getChatByID(chatID: String) async -> Result<ChatModel, any Error> {
         return await APIHelper.shared.codableRequest {
             guard let userID = Auth.auth().currentUser?.uid else {

@@ -49,4 +49,16 @@ public class ChatViewModel: AlertViewModel, ObservableObject {
             }
         }
     }
+    
+    @MainActor public func checkChatExistence(chatID: String, completion: @escaping(Bool) -> ()) {
+        Task {
+            let result = await manager.checkChatExistence(chatID: chatID)
+            switch result {
+            case .failure(_):
+                break
+            case .success(let exists):
+                completion(exists)
+            }
+        }
+    }
 }
