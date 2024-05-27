@@ -31,6 +31,7 @@ public protocol ChatServiceProtocol {
     func checkUnreadMessage(completion: @escaping (Bool) -> ())
     
     func createChat(documentID: String, message: String) async -> Result<Void, Error>
+    func getChatByID(chatID: String) async -> Result<ChatModel, Error>
 
     
     func pdfThumbnail(url: URL?, media: Data?, width: CGFloat) async -> UIImage?
@@ -45,6 +46,19 @@ public class ChatService {
 }
 
 extension ChatService: ChatServiceProtocol {
+    public func getChatByID(chatID: String) async -> Result<ChatModel, any Error> {
+        return await APIHelper.shared.codableRequest {
+            guard let userID = Auth.auth().currentUser?.uid else {
+                throw CustomErrors.userNotFound
+            }
+            
+            return try await db
+                .collection(Paths.chats.rawValue)
+                .document(chatID)
+                .getDocument(as: ChatModel.self)
+        }
+    }
+    
     public func createChat(documentID: String, message: String) async -> Result<Void, any Error> {
         return await APIHelper.shared.voidRequest {
             guard let userID = Auth.auth().currentUser?.uid else {

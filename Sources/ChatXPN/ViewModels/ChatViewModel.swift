@@ -8,7 +8,7 @@
 import Foundation
 import NotraAuth
 
-class ChatViewModel: AlertViewModel, ObservableObject {
+public class ChatViewModel: AlertViewModel, ObservableObject {
     @Published var loading: Bool = false
     @Published var showAlert: Bool = false
     @Published var alertMessage: String = ""
@@ -16,7 +16,7 @@ class ChatViewModel: AlertViewModel, ObservableObject {
     @Published var chats = [ChatModelViewModel]()
     
     var manager: ChatServiceProtocol
-    init(manager: ChatServiceProtocol = ChatService.shared) {
+    public init(manager: ChatServiceProtocol = ChatService.shared) {
         self.manager = manager
     }
     
@@ -31,6 +31,22 @@ class ChatViewModel: AlertViewModel, ObservableObject {
             }
             
             self.loading = false
+        }
+    }
+    
+    @MainActor public func getChatByID(chatID: String, completion: @escaping(ChatModelViewModel) -> ()) {
+        loading = true
+        Task {
+            let result = await manager.getChatByID(chatID: chatID)
+            switch result {
+            case .failure(let error):
+                self.makeAlert(with: error, message: &self.alertMessage, alert: &self.showAlert)
+            case .success(let chat):
+                completion(ChatModelViewModel(chat: chat))
+            }
+            if !Task.isCancelled {
+                loading = false
+            }
         }
     }
 }

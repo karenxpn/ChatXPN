@@ -5,14 +5,22 @@ import SwiftUI
 
 public struct ChatXPN: View {
     @EnvironmentObject private var viewRouter: ChatViewRouter
-    public init() { }
+    let chat: ChatModelViewModel?
+    
+    public init(chat: ChatModelViewModel? = nil) {
+        self.chat = chat
+    }
     
     public var body: some View {
         NavigationStack(path: $viewRouter.chatPath) {
-            Chat()
-                .navigationDestination(for: ChatPath.self) { page in
-                    viewRouter.buildChatView(page: page)
-                }
+            if let chat {
+                Text ( "Chat here" )
+            } else {
+                Chat()
+                    .navigationDestination(for: ChatPath.self) { page in
+                        viewRouter.buildChatView(page: page)
+                    }
+            }
         }
     }
 }
