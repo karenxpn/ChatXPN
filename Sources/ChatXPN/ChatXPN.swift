@@ -22,7 +22,9 @@ public struct ChatXPN: View {
                             Button {
                                 dismiss()
                             } label: {
-                                Image("close_popup")
+                                Image("close_popup", bundle: .module)
+                                    .scaleEffect(0.8)
+                                    .padding()
                             }
                         }
                     })
