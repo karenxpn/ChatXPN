@@ -46,7 +46,7 @@ public struct ChatModelViewModel: Identifiable, Equatable, Hashable {
     var image: String       { self.chat.image }
     
     var name: String {
-        if let user = self.chat.users.first(where: {$0.id != Auth.auth().currentUser?.uid }) { return user.name }
+        if let user = self.chat.users.first(where: {$0.id != Auth.auth().currentUser?.uid }) { return user.name.isEmpty ? ((user.isAdmin) ? "Admin" : "User") : user.name }
         return ""
     }
     
