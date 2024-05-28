@@ -28,12 +28,8 @@ struct ChatRoom: View {
             }
         }.ignoresSafeArea(.container, edges: .bottom)
             .onAppear {
-                NotificationCenter.default.post(name: Notification.Name("hideTabBar"), object: nil)
                 roomVM.chatID = chat.id
                 roomVM.getMessages()
-            }
-            .onDisappear {
-                NotificationCenter.default.post(name: Notification.Name("showTabBar"), object: nil)
             }.navigationTitle("")
             .toolbar {
                 ToolbarItem(placement: .principal) {

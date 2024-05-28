@@ -10,7 +10,7 @@ import SwiftUI
 import NotraAuth
 
 public class ChatViewRouter: AlertViewModel, ObservableObject {
-    @Published var chatPath = [ChatPath]()
+    @Published public var chatPath = [ChatPath]()
     @Published public var hasUnreadMessage: Bool = false
     
     var manager: ChatServiceProtocol
@@ -30,7 +30,6 @@ public class ChatViewRouter: AlertViewModel, ObservableObject {
     @ViewBuilder
     func buildChatView(page: ChatPath) -> some View {
         switch page {
-            
         case .chat:
             Chat()
         case .chatRoom(let chat):
