@@ -9,9 +9,9 @@ import Foundation
 import NotraAuth
 
 public class ChatViewModel: AlertViewModel, ObservableObject {
-    @Published var loading: Bool = false
-    @Published var showAlert: Bool = false
-    @Published var alertMessage: String = ""
+    @Published public var loading: Bool = false
+    @Published public var showAlert: Bool = false
+    @Published public var alertMessage: String = ""
 
     @Published var chats = [ChatModelViewModel]()
     
