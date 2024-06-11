@@ -14,12 +14,14 @@ public enum MessageType : RawRepresentable, CaseIterable, Codable, Equatable, Ha
     case text
     case photo
     case file
+    case call
     case unknown(RawValue)
     
     public static let allCases: AllCases = [
         .text,
         .photo,
         .file,
+        .call,
     ]
     
     public init(rawValue: RawValue) {
@@ -32,6 +34,7 @@ public enum MessageType : RawRepresentable, CaseIterable, Codable, Equatable, Ha
         case .text                  : return "text"
         case .photo                 : return "photo"
         case .file                  : return "file"
+        case .call                  : return "call"
         case let .unknown(value)    : return value
         }
     }

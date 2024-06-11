@@ -20,6 +20,8 @@ struct MessageContent: View {
                 PhotoMessageContent(message: message)
             } else if message.type == .file {
                 FileMessageContent(message: message)
+            } else if message.type == .call {
+                CallMessageContent(message: message)
             }
             
             HStack {

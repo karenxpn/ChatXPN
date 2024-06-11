@@ -14,6 +14,7 @@ public struct MessageModel: Codable {
     @DocumentID public var id: String?
     var createdAt: Timestamp
     var type: MessageType
+    var callEnded: Bool?
     var content: String
     var sentBy: String
     var seenBy: [String]
@@ -41,6 +42,7 @@ struct MessageViewModel: Identifiable {
     var createdAt: String                       { self.message.createdAt.dateValue().countTimeBetweenDates() }
     var timestamp: Timestamp                    { self.message.createdAt }
     var type: MessageType                       { self.message.type }
+    var callEnded: Bool?                        { self.message.callEnded }
     var content: String                         { self.message.content }
     var sentBy: String                          { self.message.sentBy }
     var received: Bool                          { self.message.sentBy != Auth.auth().currentUser?.uid }
