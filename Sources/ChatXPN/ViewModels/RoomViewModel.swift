@@ -15,6 +15,8 @@ class RoomViewModel: AlertViewModel, ObservableObject {
     @Published var showAlert: Bool = false
     @Published var alertMessage: String = ""
     
+    @Published var loadingCall: Bool = false
+    
     @Published var message: String = ""
     @Published var media: Data?
     
@@ -138,6 +140,24 @@ class RoomViewModel: AlertViewModel, ObservableObject {
         Task {
             let thumbnail = await manager.pdfThumbnail(url: URL(string: url ?? ""), media: media, width: width)
             completion(thumbnail)
+        }
+    }
+    
+    @MainActor func getToken(completion: @escaping(String?) -> ()) {
+        loadingCall = true
+        Task {
+            do {
+                let result = try await manager.fetchToken()
+                completion(result.token)
+            } catch {
+                print(error)
+                self.makeAlert(with: error, message: &self.alertMessage, alert: &self.showAlert)
+                completion(nil)
+            }
+            
+            if !Task.isCancelled {
+                loadingCall = false
+            }
         }
     }
     

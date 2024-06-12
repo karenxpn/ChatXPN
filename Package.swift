@@ -19,6 +19,7 @@ let package = Package(
         .package(url: "https://github.com/huynguyencong/DataCache.git", branch: "master"),
         .package(url: "https://github.com/SDWebImage/SDWebImageSwiftUI.git", .upToNextMajor(from: "3.0.2")),
         .package(url: "https://github.com/karenxpn/CameraXPN.git", branch: "main"),
+        .package(url: "https://github.com/GetStream/stream-video-swift.git", .upToNextMajor(from: "1.0.6")),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -36,6 +37,8 @@ let package = Package(
                 .product(name: "FirebaseFirestore", package: "firebase-ios-sdk"),
                 .product(name: "FirebaseFirestoreSwift", package: "firebase-ios-sdk"),
                 .product(name: "FirebaseStorage", package: "firebase-ios-sdk"),
+                .product(name: "StreamVideo", package: "stream-video-swift"),
+                .product(name: "StreamVideoSwiftUI", package: "stream-video-swift")
             ],
             resources: [.process("Resources")]),
         .testTarget(

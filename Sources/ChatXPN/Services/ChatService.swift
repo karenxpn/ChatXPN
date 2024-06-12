@@ -33,7 +33,9 @@ public protocol ChatServiceProtocol {
     func createChat(documentID: String, message: String) async -> Result<Void, Error>
     func getChatByID(chatID: String) async -> Result<ChatModel, Error>
     func checkChatExistence(chatID: String) async -> Result<Bool, Error>
-
+    
+    // video call
+    func fetchToken() async throws -> CallTokenModel
     
     func pdfThumbnail(url: URL?, media: Data?, width: CGFloat) async -> UIImage?
 }
@@ -47,6 +49,12 @@ public class ChatService {
 }
 
 extension ChatService: ChatServiceProtocol {
+    
+    public func fetchToken() async throws -> CallTokenModel {
+        return try await APIHelper.shared.onCallRequest(name: "generateStreamToken",
+                                                        responseType: CallTokenModel.self)
+    }
+    
     public func checkChatExistence(chatID: String) async -> Result<Bool, any Error> {
         do {
             let chat = try await db.collection(Paths.chats.rawValue)
