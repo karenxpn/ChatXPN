@@ -16,8 +16,6 @@ struct ChatRoom: View {
     
     @StateObject private var roomVM = RoomViewModel()
     
-    @State private var token: String?
-    
     var body: some View {
         ZStack {
             
@@ -45,12 +43,16 @@ struct ChatRoom: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         roomVM.getToken { token in
-                            if let token { self.token = token }
+                            if let token { self.roomVM.token = token }
                         }
                     } label: {
-                        Image(systemName: "video")
-                            .tint(.primary)
-                    }.fullScreenCover(item: $token) { token in
+                        if roomVM.loadingCall { ProgressView() }
+                        else {
+                            Image(systemName: "video")
+                                .tint(.primary)
+                        }
+                    }.disabled(roomVM.loadingCall)
+                        .fullScreenCover(item: $roomVM.token) { token in
                         VideoCall(token: token, callId: chat.id, apiKey: callApiKey)
                     }
                 }
