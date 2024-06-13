@@ -17,15 +17,17 @@ struct CallMessageContent: View {
 
             HStack(alignment: .bottom, spacing: 8) {
                 
-                Image(systemName: "video")
-                
-                VStack {
-                    TextHelper(text: message.content, color: !message.received ? .white : .primary)
-                    if message.callEnded == false {
-                        TextHelper(text: NSLocalizedString("joinCall", comment: ""), color: .white)
-                            .padding(.horizontal, 10)
-                            .padding(.vertical, 6)
-                            .background(RoundedRectangle(cornerRadius: 16).fill(.green))
+                HStack(alignment: .center, spacing: 12) {
+                    Image(systemName: "video")
+                    
+                    VStack {
+                        TextHelper(text: message.content, color: !message.received ? .white : .primary)
+                        if message.callEnded == false {
+                            TextHelper(text: NSLocalizedString("joinCall", comment: ""), color: .white)
+                                .padding(.horizontal, 10)
+                                .padding(.vertical, 6)
+                                .background(RoundedRectangle(cornerRadius: 16).fill(.green))
+                        }
                     }
                 }
                 
