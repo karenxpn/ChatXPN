@@ -11,10 +11,11 @@ import NotraAuth
 struct ChatListCell: View {
     @EnvironmentObject var viewRouter: ChatViewRouter
     let chat: ChatModelViewModel
+    let callApiKey: String
     
     var body: some View {
         Button {
-            viewRouter.pushChatPath(.chatRoom(chat: chat))
+            viewRouter.pushChatPath(.chatRoom(chat: chat, apiKey: callApiKey))
         } label: {
             HStack(alignment: .top, spacing: 14) {
                 
@@ -53,6 +54,6 @@ struct ChatListCell: View {
 }
 
 #Preview {
-    ChatListCell(chat: PreviewModels.chats[0])
+    ChatListCell(chat: PreviewModels.chats[0], callApiKey: "")
         .environmentObject(ChatViewRouter())
 }

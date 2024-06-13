@@ -11,6 +11,7 @@ import NotraAuth
 
 struct ChatRoom: View {
     let chat: ChatModelViewModel
+    let callApiKey: String
     @State private var message: String = ""
     
     @StateObject private var roomVM = RoomViewModel()
@@ -47,5 +48,5 @@ struct ChatRoom: View {
 }
 
 #Preview {
-    ChatRoom(chat: PreviewModels.chats[0])
+    ChatRoom(chat: PreviewModels.chats[0], callApiKey: "")
 }

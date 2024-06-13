@@ -10,9 +10,10 @@ import NotraAuth
 
 struct Chat: View {
     @StateObject private var chatVM = ChatViewModel()
+    let callApiKey: String
     
     var body: some View {
-        ChatList()
+        ChatList(callApiKey: callApiKey)
             .navigationTitle("")
             .navigationBarTitleDisplayMode(.inline)
             .environmentObject(chatVM)
@@ -32,5 +33,5 @@ struct Chat: View {
 }
 
 #Preview {
-    Chat()
+    Chat(callApiKey: "")
 }
