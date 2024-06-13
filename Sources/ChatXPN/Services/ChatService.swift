@@ -330,7 +330,8 @@ extension ChatService: ChatServiceProtocol {
             
             let message = MessageModel(createdAt: Timestamp(date: Date().toGlobalTime()),
                                        type: type,
-                                       content: content,
+                                       callEnded: type == .call ? false : nil,
+                                       content: type == .call ? "Video Call" : content,
                                        sentBy: userID,
                                        seenBy: [userID],
                                        status: .sent,
