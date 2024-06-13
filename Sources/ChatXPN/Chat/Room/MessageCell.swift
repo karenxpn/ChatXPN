@@ -90,9 +90,11 @@ struct MessageCell: View {
                     }
                 ) {
                     VStack(alignment: .leading, spacing: 0) {
-                        MenuButtonsHelper(label: NSLocalizedString("reply", bundle: .module, comment: ""), icon: "arrowshape.turn.up.left", role: .cancel) {
-                            roomVM.replyMessage = message
-                            showPopOver = false
+                        if message.type != .call {
+                            MenuButtonsHelper(label: NSLocalizedString("reply", bundle: .module, comment: ""), icon: "arrowshape.turn.up.left", role: .cancel) {
+                                roomVM.replyMessage = message
+                                showPopOver = false
+                            }
                         }
                         Divider()
                         

@@ -57,7 +57,7 @@ class RoomViewModel: AlertViewModel, ObservableObject {
         
         Task {
             if let media {
-                if messageType != .text {
+                if messageType == .file || messageType == .photo {
                     let messageID = addLocalMediaMessage(messageType: messageType)
                     
                     let mediaUploadResult = await manager.uploadMedia(media: media, type: messageType)
@@ -75,7 +75,6 @@ class RoomViewModel: AlertViewModel, ObservableObject {
                                                                     type: replyMessage!.type,
                                                                     name: replyMessage!.senderName) : nil
             self.replyMessage = nil
-            
             
             let result = await manager.sendMessage(chatID: chatID, type: messageType, content: sendingMessage, repliedTo: replyTo)
             

@@ -44,6 +44,7 @@ struct ChatRoom: View {
                     Button {
                         roomVM.getToken { token in
                             if let token { self.roomVM.token = token }
+                            roomVM.sendMessage(messageType: .call)
                         }
                     } label: {
                         if roomVM.loadingCall { ProgressView() }
