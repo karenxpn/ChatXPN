@@ -16,6 +16,8 @@ struct ChatRoom: View {
     
     @StateObject private var roomVM = RoomViewModel()
     
+    @State private var token: String?
+    
     var body: some View {
         ZStack {
             
@@ -38,6 +40,19 @@ struct ChatRoom: View {
                                fontSize: 20)
                     .kerning(0.56)
                     .accessibilityAddTraits(.isHeader)
+                }
+                
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        roomVM.getToken { token in
+                            if let token { self.token = token }
+                        }
+                    } label: {
+                        Image(systemName: "video")
+                            .tint(.primary)
+                    }.fullScreenCover(item: $token) { token in
+                        VideoCall(token: token, callId: chat.id, apiKey: callApiKey)
+                    }
                 }
             }.alert(NSLocalizedString("error", bundle: .module, comment: ""), isPresented: $roomVM.showAlert, actions: {
                 Button(NSLocalizedString("gotIt", bundle: .module, comment: ""), role: .cancel) { }

@@ -167,3 +167,8 @@ struct DelaysTouchesButtonStyle: ButtonStyle {
         }
     }
 }
+
+
+extension String: Identifiable {
+    public var id: String { return self }
+}
