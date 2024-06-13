@@ -18,7 +18,16 @@ struct CallMessageContent: View {
             HStack(alignment: .bottom, spacing: 8) {
                 
                 Image(systemName: "video")
-                TextHelper(text: message.content, color: !message.received ? .white : .primary)
+                
+                VStack {
+                    TextHelper(text: message.content, color: !message.received ? .white : .primary)
+                    if message.callEnded == false {
+                        TextHelper(text: NSLocalizedString("join", comment: ""), color: .white)
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 6)
+                            .background(RoundedRectangle(cornerRadius: 12).fill(.green))
+                    }
+                }
                 
                 if !message.received && message.status != .pending {
                     Image(message.seen ? "read_icon" : "sent_icon", bundle: .module)
