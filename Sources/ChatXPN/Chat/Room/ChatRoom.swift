@@ -1,6 +1,6 @@
 //
 //  ChatRoom.swift
-//  
+//
 //
 //  Created by Karen Mirakyan on 06.05.24.
 //
@@ -53,8 +53,8 @@ struct ChatRoom: View {
                         }
                     }.disabled(roomVM.loadingCall)
                         .fullScreenCover(item: $roomVM.token) { token in
-                        VideoCall(token: token, callId: chat.id, apiKey: callApiKey)
-                    }
+                            VideoCall(token: token, callId: chat.id, apiKey: callApiKey, create: !roomVM.joiningCall)
+                        }
                 }
             }.alert(NSLocalizedString("error", bundle: .module, comment: ""), isPresented: $roomVM.showAlert, actions: {
                 Button(NSLocalizedString("gotIt", bundle: .module, comment: ""), role: .cancel) { }

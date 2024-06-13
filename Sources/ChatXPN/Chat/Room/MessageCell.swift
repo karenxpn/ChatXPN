@@ -13,7 +13,6 @@ struct MessageCell: View {
     
     @EnvironmentObject var roomVM: RoomViewModel
     @State private var present: Bool = false
-    @State private var joinCall: Bool = false
     @State private var showPopOver: Bool = false
     
     let message: MessageViewModel
@@ -36,8 +35,13 @@ struct MessageCell: View {
                 .delaysTouches(for: 0.2) {
                     if message.type == .photo || message.type == .file {
                         present.toggle()
-                    } else if message.type == .call && message.callEnded == true {
-                        joinCall.toggle()
+                    } else if message.type == .call && message.callEnded == false {
+                        roomVM.getToken { token in
+                            if let token {
+                                self.roomVM.token = token
+                                self.roomVM.joiningCall = true
+                            }
+                        }
                     }
                 }.gesture(
                     LongPressGesture(minimumDuration: 0.3)

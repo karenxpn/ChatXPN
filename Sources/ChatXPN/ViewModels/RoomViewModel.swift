@@ -28,6 +28,7 @@ class RoomViewModel: AlertViewModel, ObservableObject {
     @Published var replyMessage: MessageViewModel?
     
     @Published var token: String?
+    @Published var joiningCall: Bool = false
     
     var manager: ChatServiceProtocol
     init(manager: ChatServiceProtocol = ChatService.shared) {
