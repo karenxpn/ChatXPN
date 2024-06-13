@@ -23,7 +23,7 @@ struct CallMessageContent: View {
                     VStack {
                         TextHelper(text: message.content, color: !message.received ? .white : .primary)
                         if message.callEnded == false {
-                            TextHelper(text: NSLocalizedString("joinCall", comment: ""), color: .white)
+                            TextHelper(text: NSLocalizedString("joinCall", bundle: .module, comment: ""), color: .white)
                                 .padding(.horizontal, 10)
                                 .padding(.vertical, 6)
                                 .background(RoundedRectangle(cornerRadius: 16).fill(.green))
