@@ -29,19 +29,19 @@ struct MessageBar: View {
                     Button {
                         openGallery.toggle()
                     } label: {
-                        Label(NSLocalizedString("loadFromGallery", bundle: .module, comment: ""), systemImage: "photo")
+                        Label("loadFromGallery"~, systemImage: "photo")
                     }
                     
                     Button {
                         openCamera.toggle()
                     } label: {
-                        Label(NSLocalizedString("openCamera", bundle: .module, comment: ""), systemImage: "camera")
+                        Label("openCamera"~, systemImage: "camera")
                     }
                     
                     Button {
                         openFileImporter.toggle()
                     } label: {
-                        Label(NSLocalizedString("openDocuments", bundle: .module, comment: ""), systemImage: "doc.on.doc")
+                        Label("openDocuments"~, systemImage: "doc.on.doc")
                     }
                 } label: {
                     Image("icon_attachment", bundle: .module)
@@ -49,7 +49,7 @@ struct MessageBar: View {
                         .padding([.leading], 20)
                 }
                 
-                TextField(NSLocalizedString("messageBarPlaceholder", bundle: .module, comment: ""), text: $roomVM.message, axis: .vertical)
+                TextField("messageBarPlaceholder"~, text: $roomVM.message, axis: .vertical)
                     .lineLimit(3)
                     .foregroundColor(.primary)
                     .font(.custom("SF Pro Text", size: 13))
@@ -79,7 +79,7 @@ struct MessageBar: View {
                 //                roomVM.sendMessage(messageType: url.absoluteString.hasSuffix(".mov") ? .video : .photo)
             }, font: .custom("Inter-SemiBold", size: 14), permissionMessage: "enableAccessForBoth",
                       recordVideoButtonColor: .primary,
-                      useMediaContent: NSLocalizedString("useThisMedia", bundle: .module, comment: ""), videoAllowed: false)
+                      useMediaContent: "useThisMedia"~, videoAllowed: false)
             
         }).fileImporter(isPresented: $openFileImporter, allowedContentTypes: [.pdf], allowsMultipleSelection: false) { result in
             switch result {

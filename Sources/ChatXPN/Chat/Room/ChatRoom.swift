@@ -57,8 +57,8 @@ struct ChatRoom: View {
                             VideoCall(token: token, callId: chat.id, apiKey: callApiKey, create: !roomVM.joiningCall)
                         }
                 }
-            }.alert(NSLocalizedString("error", bundle: .module, comment: ""), isPresented: $roomVM.showAlert, actions: {
-                Button(NSLocalizedString("gotIt", bundle: .module, comment: ""), role: .cancel) { }
+            }.alert("error"~, isPresented: $roomVM.showAlert, actions: {
+                Button("gotIt"~, role: .cancel) { }
             }, message: {
                 Text(roomVM.alertMessage)
             })

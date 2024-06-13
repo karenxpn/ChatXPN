@@ -64,9 +64,9 @@ public struct ChatModelViewModel: Identifiable, Equatable, Hashable {
         if messageType == .text {
             return self.chat.lastMessage.content
         } else if messageType == .call {
-            return NSLocalizedString("videoCall", bundle: .module, comment: "")
+            return "videoCall"~
         } else {
-            return NSLocalizedString("mediaContent", bundle: .module, comment: "")
+            return "mediaContent"~
         }
     }
     

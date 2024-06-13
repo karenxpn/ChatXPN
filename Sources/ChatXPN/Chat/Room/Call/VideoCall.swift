@@ -81,8 +81,8 @@ struct VideoCall: View {
                 dismiss()
             }
             print(newValue)
-        }.alert(NSLocalizedString("error", bundle: .module, comment: ""), isPresented: $viewModel.errorAlertShown, actions: {
-            Button(NSLocalizedString("ok", bundle: .module, comment: ""), role: .cancel) { dismiss() }
+        }.alert("error"~, isPresented: $viewModel.errorAlertShown, actions: {
+            Button("ok"~, role: .cancel) { dismiss() }
         }, message: {
             Text(viewModel.error?.localizedDescription ?? "")
         })

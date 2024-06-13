@@ -87,7 +87,7 @@ struct PDFKitContainerView: View {
         }.toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 if let pdf {
-                    ShareLink(item: pdf, preview: SharePreview(NSLocalizedString("yourPdfPreview", bundle: .module, comment: "")))
+                    ShareLink(item: pdf, preview: SharePreview("yourPdfPreview"~))
                 }
             }
         }

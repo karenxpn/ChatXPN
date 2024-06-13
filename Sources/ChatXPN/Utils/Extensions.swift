@@ -71,7 +71,7 @@ extension Date {
         formatter.unitsStyle = .short
         let string = formatter.localizedString(for: self, relativeTo: currentDate)
 
-        return currentDate.millisecondsSince1970 - self.millisecondsSince1970 < 3000 ? NSLocalizedString("justNow", bundle: .module, comment: "") : string
+        return currentDate.millisecondsSince1970 - self.millisecondsSince1970 < 3000 ? "justNow"~ : string
     }
 }
 
@@ -171,4 +171,9 @@ struct DelaysTouchesButtonStyle: ButtonStyle {
 
 extension String: Identifiable {
     public var id: String { return self }
+}
+
+postfix operator ~
+public postfix func ~ (string: String) -> String {
+    return NSLocalizedString(string, bundle: .module, comment: "")
 }
