@@ -169,6 +169,14 @@ class RoomViewModel: AlertViewModel, ObservableObject {
         }
     }
     
+    @MainActor func endCall() {
+        Task {
+            if let callId {
+                let result = await manager.markCallEnded(callId: callId)
+            }
+        }
+    }
+    
     private func updateCachedMessages(with newMessages: [MessageViewModel]) {
         // Iterate through the new messages
         for message in newMessages {

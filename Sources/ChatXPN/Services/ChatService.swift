@@ -36,6 +36,7 @@ public protocol ChatServiceProtocol {
     
     // video call
     func fetchToken() async throws -> CallTokenModel
+    func markCallEnded(callId: String) async -> Result<Void, Error>
     
     func pdfThumbnail(url: URL?, media: Data?, width: CGFloat) async -> UIImage?
 }
@@ -49,6 +50,14 @@ public class ChatService {
 }
 
 extension ChatService: ChatServiceProtocol {
+    public func markCallEnded(callId: String) async -> Result<Void, any Error> {
+        return await APIHelper.shared.voidRequest {
+            try await db.collection(Paths.chats.rawValue)
+                .document(callId)
+                .setData(["callEnded": true], merge: true)
+        }
+    }
+    
     
     public func fetchToken() async throws -> CallTokenModel {
         return try await APIHelper.shared.onCallRequest(name: "generateStreamToken",
@@ -70,7 +79,7 @@ extension ChatService: ChatServiceProtocol {
     
     public func getChatByID(chatID: String) async -> Result<ChatModel, any Error> {
         return await APIHelper.shared.codableRequest {
-            guard let userID = Auth.auth().currentUser?.uid else {
+            guard (Auth.auth().currentUser?.uid) != nil else {
                 throw CustomErrors.userNotFound
             }
             
