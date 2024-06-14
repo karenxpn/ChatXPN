@@ -8,6 +8,7 @@
 import SwiftUI
 import FirebaseFirestore
 import NotraAuth
+import FirebaseAuth
 
 struct ChatRoom: View {
     let chat: ChatModelViewModel
@@ -62,7 +63,7 @@ struct ChatRoom: View {
                             VideoCall(token: token,
                                       callId: roomVM.callId ?? "",
                                       apiKey: callApiKey,
-                                      users: chat.users,
+                                      users: chat.users.filter{ $0.id != Auth.auth().currentUser?.uid },
                                       create: !roomVM.joiningCall)
                         })
                 }
