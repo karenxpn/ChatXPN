@@ -28,6 +28,7 @@ class RoomViewModel: AlertViewModel, ObservableObject {
     @Published var replyMessage: MessageViewModel?
     
     @Published var token: String?
+    @Published var callId: String?
     @Published var joiningCall: Bool = false
     
     var manager: ChatServiceProtocol
@@ -79,7 +80,7 @@ class RoomViewModel: AlertViewModel, ObservableObject {
             let result = await manager.sendMessage(chatID: chatID, type: messageType, content: sendingMessage, repliedTo: replyTo)
             
             switch result {
-            case .success(()):
+            case .success(_):
                 sendingMessage = ""
             case .failure(let error):
                 self.makeAlert(with: error, message: &self.alertMessage, alert: &self.showAlert)
@@ -144,16 +145,22 @@ class RoomViewModel: AlertViewModel, ObservableObject {
         }
     }
     
-    @MainActor func getToken(completion: @escaping(String?) -> ()) {
+    @MainActor func getTokenAndSendVideoCallMessage(join: Bool = false, callId: String? = nil,completion: @escaping((String?, String?)) -> ()) {
         loadingCall = true
         Task {
             do {
-                let result = try await manager.fetchToken()
-                completion(result.token)
+                let tokenResult = try await manager.fetchToken()
+                if !join {
+                    let message = try await manager.sendMessage(chatID: chatID, type: .call, content: "", repliedTo: nil).get()
+                    completion((tokenResult.token, message.id))
+                } else {
+                    completion((tokenResult.token, callId))
+                }
+                                
             } catch {
                 print(error)
                 self.makeAlert(with: error, message: &self.alertMessage, alert: &self.showAlert)
-                completion(nil)
+                completion((nil, nil))
             }
             
             if !Task.isCancelled {

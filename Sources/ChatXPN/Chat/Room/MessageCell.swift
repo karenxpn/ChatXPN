@@ -36,10 +36,11 @@ struct MessageCell: View {
                     if message.type == .photo || message.type == .file {
                         present.toggle()
                     } else if message.type == .call && message.callEnded == false {
-                        roomVM.getToken { token in
-                            if let token {
-                                self.roomVM.token = token
-                                self.roomVM.joiningCall = true
+                        roomVM.getTokenAndSendVideoCallMessage(join: true, callId: message.id) { (token, callId) in
+                            if let token, let callId {
+                                roomVM.token = token
+                                roomVM.callId = callId
+                                roomVM.joiningCall = true
                             }
                         }
                     }

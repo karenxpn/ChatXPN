@@ -42,9 +42,11 @@ struct ChatRoom: View {
                 
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
-                        roomVM.getToken { token in
-                            if let token { self.roomVM.token = token }
-                            roomVM.sendMessage(messageType: .call)
+                        roomVM.getTokenAndSendVideoCallMessage(join: false) { (token, callId) in
+                            if let token, let callId {
+                                roomVM.token = token
+                                roomVM.callId = callId
+                            }
                         }
                     } label: {
                         if roomVM.loadingCall { ProgressView() }
@@ -54,7 +56,7 @@ struct ChatRoom: View {
                         }
                     }.disabled(roomVM.loadingCall)
                         .fullScreenCover(item: $roomVM.token) { token in
-                            VideoCall(token: token, callId: chat.id, apiKey: callApiKey, create: !roomVM.joiningCall)
+                            VideoCall(token: token, callId: roomVM.callId ?? "", apiKey: callApiKey, create: !roomVM.joiningCall)
                         }
                 }
             }.alert("error"~, isPresented: $roomVM.showAlert, actions: {

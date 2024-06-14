@@ -23,7 +23,7 @@ public protocol ChatServiceProtocol {
     func sendMessage(chatID: String,
                      type: MessageType,
                      content: String,
-                     repliedTo: RepliedMessageModel?) async -> Result<Void, Error>
+                     repliedTo: RepliedMessageModel?) async -> Result<MessageModel, Error>
     func uploadMedia(media: Data, type: MessageType) async -> Result<String, Error>
     func editMessage(chatID: String, messageID: String, message: String, status: MessageStatus) async -> Result<Void, Error>
     func sendReaction(chatID: String, messageID: String, reaction: ReactionModel, action: ReactionAction) async -> Result<Void, Error>
@@ -101,7 +101,7 @@ extension ChatService: ChatServiceProtocol {
             switch sentMessage {
             case .failure(let error):
                 throw error
-            case .success(()):
+            case .success(_):
                 break
             }
         }
@@ -322,8 +322,8 @@ extension ChatService: ChatServiceProtocol {
         }
     }
     
-    public func sendMessage(chatID: String, type: MessageType, content: String, repliedTo: RepliedMessageModel?) async -> Result<Void, any Error> {
-        return await APIHelper.shared.voidRequest {
+    public func sendMessage(chatID: String, type: MessageType, content: String, repliedTo: RepliedMessageModel?) async -> Result<MessageModel, any Error> {
+        return await APIHelper.shared.codableRequest {
             guard let userID = Auth.auth().currentUser?.uid else {
                 throw CustomErrors.userNotFound
             }
@@ -358,6 +358,8 @@ extension ChatService: ChatServiceProtocol {
             try await db.collection(Paths.chats.rawValue)
                 .document(chatID)
                 .setData(["lastMessage": Firestore.Encoder().encode(lastMessage)], merge: true)
+            
+            return curMessage
         }
     }
     
