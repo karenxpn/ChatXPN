@@ -36,7 +36,7 @@ public protocol ChatServiceProtocol {
     
     // video call
     func fetchToken() async throws -> CallTokenModel
-    func markCallEnded(callId: String) async -> Result<Void, Error>
+    func markCallEnded(chatID: String, callId: String) async -> Result<Void, Error>
     
     func pdfThumbnail(url: URL?, media: Data?, width: CGFloat) async -> UIImage?
 }
@@ -50,9 +50,11 @@ public class ChatService {
 }
 
 extension ChatService: ChatServiceProtocol {
-    public func markCallEnded(callId: String) async -> Result<Void, any Error> {
+    public func markCallEnded(chatID: String, callId: String) async -> Result<Void, any Error> {
         return await APIHelper.shared.voidRequest {
             try await db.collection(Paths.chats.rawValue)
+                .document(chatID)
+                .collection(Paths.messages.rawValue)
                 .document(callId)
                 .setData(["callEnded": true], merge: true)
         }

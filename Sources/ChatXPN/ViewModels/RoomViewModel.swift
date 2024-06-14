@@ -172,7 +172,7 @@ class RoomViewModel: AlertViewModel, ObservableObject {
     @MainActor func endCall() {
         Task {
             if let callId {
-                let result = await manager.markCallEnded(callId: callId)
+                _ = await manager.markCallEnded(chatID: chatID, callId: callId)
             }
         }
     }
