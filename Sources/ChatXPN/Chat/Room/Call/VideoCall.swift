@@ -22,11 +22,13 @@ struct VideoCall: View {
     private let userId: String = Auth.auth().currentUser?.uid ?? ""
     private let callId: String
     private let create: Bool
+    private let members: [Member]
     
-    init(token: String, callId: String, apiKey: String, create: Bool = true) {
+    init(token: String, callId: String, apiKey: String, users: [String], create: Bool = true) {
         self.callId = callId
         self.create = create
         self.apiKey = apiKey
+        self.members = users.map { Member(userId: $0) }
         
         let user = User(
             id: userId,
@@ -63,14 +65,13 @@ struct VideoCall: View {
             if viewModel.call != nil {
                 CallContainer(viewFactory: DefaultViewFactory.shared, viewModel: viewModel)
             } else {
-                
                 Text("loading...")
             }
         }.onAppear {
             Task {
                 guard viewModel.call == nil else { return }
                 if create {
-                    viewModel.startCall(callType: .default, callId: callId, members: [], ring: true)
+                    viewModel.startCall(callType: .default, callId: callId, members: members, ring: true)
                 } else {
                     viewModel.acceptCall(callType: .default, callId: callId)
                 }

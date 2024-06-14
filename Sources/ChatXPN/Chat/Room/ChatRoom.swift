@@ -59,7 +59,7 @@ struct ChatRoom: View {
                         .fullScreenCover(item: $roomVM.token, onDismiss: {
                             roomVM.endCall()
                         }, content: { token in
-                            VideoCall(token: token, callId: roomVM.callId ?? "", apiKey: callApiKey, create: !roomVM.joiningCall)
+                            VideoCall(token: token, callId: roomVM.callId ?? "", apiKey: callApiKey, users: chat.users.map { $0.id }, create: !roomVM.joiningCall)
                         })
                 }
             }.alert("error"~, isPresented: $roomVM.showAlert, actions: {
