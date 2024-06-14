@@ -46,6 +46,7 @@ struct ChatRoom: View {
                             if let token, let callId {
                                 roomVM.token = token
                                 roomVM.callId = callId
+                                roomVM.joiningCall = false
                             }
                         }
                     } label: {
