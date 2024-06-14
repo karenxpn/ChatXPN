@@ -24,11 +24,11 @@ struct VideoCall: View {
     private let create: Bool
     private let members: [Member]
     
-    init(token: String, callId: String, apiKey: String, users: [String], create: Bool = true) {
+    init(token: String, callId: String, apiKey: String, users: [ChatUser], create: Bool = true) {
         self.callId = callId
         self.create = create
         self.apiKey = apiKey
-        self.members = users.map { Member(userId: $0) }
+        self.members = users.map { Member(user: User(id: $0.id, name: $0.name)) }
         
         let user = User(
             id: userId,
