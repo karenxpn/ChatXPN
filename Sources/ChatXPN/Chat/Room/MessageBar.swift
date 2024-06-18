@@ -12,9 +12,7 @@ struct MessageBar: View {
     @EnvironmentObject var roomVM: RoomViewModel
     
     @State private var openGallery: Bool = false
-    @State private var openCamera: Bool = false
     @State private var openFileImporter: Bool = false
-    
     
     var body: some View {
         VStack( spacing: 0) {
@@ -32,7 +30,7 @@ struct MessageBar: View {
                     }
                     
                     Button {
-                        openCamera.toggle()
+                        roomVM.fullScreen = .camera
                     } label: {
                         Label("openCamera"~, systemImage: "camera")
                     }
