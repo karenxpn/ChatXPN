@@ -82,6 +82,7 @@ struct VideoCall: View {
             if newValue == .idle {
                 Task {
                     try await viewModel.call?.end()
+                    print("participants \(viewModel.participants)")
                     dismiss()
                 }
             }
