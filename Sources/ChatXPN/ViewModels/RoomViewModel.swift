@@ -27,9 +27,7 @@ class RoomViewModel: AlertViewModel, ObservableObject {
     
     @Published var replyMessage: MessageViewModel?
     
-    @Published var token: String?
     @Published var callId: String?
-    @Published var joiningCall: Bool = false
     
     @Published var fullScreen: FullScreenTypeEnum?
     

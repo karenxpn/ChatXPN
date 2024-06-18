@@ -124,7 +124,7 @@ enum FullScreenTypeEnum: Identifiable {
         switch self {
         case .media(let url, let type):
             return "media-\(url.absoluteString)-\(type)"
-        case .call(let token, let callId, let users, let create):
+        case .call(_, let callId, _, _):
             return callId
         case .camera:
             return "camera"

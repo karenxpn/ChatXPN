@@ -37,9 +37,8 @@ struct MessageCell: View {
                     } else if message.type == .call && message.callEnded == false {
                         roomVM.getTokenAndSendVideoCallMessage(join: true, callId: message.id) { (token, callId) in
                             if let token, let callId {
-                                roomVM.token = token
                                 roomVM.callId = callId
-                                roomVM.joiningCall = true
+                                roomVM.fullScreen = .call(token: token, callId: callId, users: [], create: false)
                             }
                         }
                     }

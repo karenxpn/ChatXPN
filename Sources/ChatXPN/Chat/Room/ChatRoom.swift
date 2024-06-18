@@ -15,9 +15,7 @@ struct ChatRoom: View {
     let chat: ChatModelViewModel
     @State private var message: String = ""
     @StateObject private var roomVM = RoomViewModel()
-    
     @Environment(\.apiKey) var apiKey
-
     
     var body: some View {
         ZStack {
@@ -48,9 +46,8 @@ struct ChatRoom: View {
                     Button {
                         roomVM.getTokenAndSendVideoCallMessage(join: false) { (token, callId) in
                             if let token, let callId {
-                                roomVM.token = token
                                 roomVM.callId = callId
-                                roomVM.joiningCall = false
+                                roomVM.fullScreen = .call(token: token, callId: callId, users: chat.users, create: true)
                             }
                         }
                     } label: {
@@ -70,7 +67,12 @@ struct ChatRoom: View {
                 case .media(let url, let type):
                     SingleMediaContentPreview(url: url, mediaType: type)
                 case .call(let token, let callId, let users, let create):
-                    Text( "Full Screen of call" )
+                    VideoCall(token: token,
+                              callId: callId,
+                              apiKey: apiKey,
+                              users: users.filter{ $0.id != Auth.auth().currentUser?.uid },
+                              create: create)
+                    
                 case .camera:
                     CameraXPN(action: { url, data in
                         roomVM.media = data
@@ -78,18 +80,9 @@ struct ChatRoom: View {
                     }, font: .custom("Inter-SemiBold", size: 14), permissionMessage: "enableAccessForBoth",
                               recordVideoButtonColor: .primary,
                               useMediaContent: "useThisMedia"~, videoAllowed: false)
-
+                    
                 }
             })
-//            .fullScreenCover(item: $roomVM.token, onDismiss: {
-//                roomVM.endCall()
-//            }, content: { token in
-//                VideoCall(token: token,
-//                          callId: roomVM.callId ?? "",
-//                          apiKey: callApiKey,
-//                          users: chat.users.filter{ $0.id != Auth.auth().currentUser?.uid },
-//                          create: !roomVM.joiningCall)
-//            })
     }
 }
 
