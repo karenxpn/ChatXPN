@@ -79,7 +79,10 @@ struct VideoCall: View {
         }.onChange(of: viewModel.callingState) { oldValue, newValue in
             if newValue == .idle {
                 // mark the message as ended call
-                dismiss()
+                Task {
+                    try await viewModel.call?.end()
+                    dismiss()
+                }
             }
             print(newValue)
         }.alert("error"~, isPresented: $viewModel.errorAlertShown, actions: {
