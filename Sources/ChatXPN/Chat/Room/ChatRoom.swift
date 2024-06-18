@@ -41,22 +41,25 @@ struct ChatRoom: View {
                     .accessibilityAddTraits(.isHeader)
                 }
                 
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        roomVM.getTokenAndSendVideoCallMessage(join: false) { (token, callId) in
-                            if let token, let callId {
-                                roomVM.callId = callId
-                                roomVM.fullScreen = .call(token: token, callId: callId, users: chat.users, create: true)
+                if !roomVM.messages.contains(where: { $0.callEnded == false && $0.type == .call }) {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button {
+                            roomVM.getTokenAndSendVideoCallMessage(join: false) { (token, callId) in
+                                if let token, let callId {
+                                    roomVM.callId = callId
+                                    roomVM.fullScreen = .call(token: token, callId: callId, users: chat.users, create: true)
+                                }
                             }
-                        }
-                    } label: {
-                        if roomVM.loadingCall { ProgressView() }
-                        else {
-                            Image(systemName: "video")
-                                .tint(.primary)
-                        }
-                    }.disabled(roomVM.loadingCall)
+                        } label: {
+                            if roomVM.loadingCall { ProgressView() }
+                            else {
+                                Image(systemName: "video")
+                                    .tint(.primary)
+                            }
+                        }.disabled(roomVM.loadingCall)
+                    }
                 }
+
             }.alert("error"~, isPresented: $roomVM.showAlert, actions: {
                 Button("gotIt"~, role: .cancel) { }
             }, message: {

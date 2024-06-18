@@ -85,7 +85,10 @@ struct VideoCall: View {
                 }
             }
             print(newValue)
-        }.alert("error"~, isPresented: $viewModel.errorAlertShown, actions: {
+        }.onChange(of: viewModel.participants, { oldValue, newValue in
+            print("old value is \(oldValue)")
+            print("new value is \(newValue)")
+        }).alert("error"~, isPresented: $viewModel.errorAlertShown, actions: {
             Button("ok"~, role: .cancel) { dismiss() }
         }, message: {
             Text(viewModel.error?.localizedDescription ?? "")
