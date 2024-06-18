@@ -76,8 +76,6 @@ struct VideoCall: View {
                     viewModel.acceptCall(callType: .default, callId: callId)
                 }
             }
-        }.onDisappear {
-            Task { try await viewModel.call?.end() }
         }.onChange(of: viewModel.callingState) { oldValue, newValue in
             if newValue == .idle {
                 // mark the message as ended call

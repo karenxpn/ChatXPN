@@ -72,7 +72,7 @@ struct ChatRoom: View {
                               users: users.filter{ $0.id != Auth.auth().currentUser?.uid },
                               create: create)
                     .onDisappear {
-                        roomVM.endCall()
+//                        roomVM.endCall()
                         print("the full screen cover value is \(roomVM.fullScreen)")
                     }
                     
