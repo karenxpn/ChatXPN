@@ -74,6 +74,7 @@ struct ChatRoom: View {
                               create: create)
                     .onDisappear {
                         roomVM.endCall()
+                        print("the full screen cover value is \(roomVM.fullScreen)")
                     }
                     
                 case .camera:
