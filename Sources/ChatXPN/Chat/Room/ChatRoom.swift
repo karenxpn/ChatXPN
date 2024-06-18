@@ -72,6 +72,9 @@ struct ChatRoom: View {
                               apiKey: apiKey,
                               users: users.filter{ $0.id != Auth.auth().currentUser?.uid },
                               create: create)
+                    .onDisappear {
+                        roomVM.endCall()
+                    }
                     
                 case .camera:
                     CameraXPN(action: { url, data in
