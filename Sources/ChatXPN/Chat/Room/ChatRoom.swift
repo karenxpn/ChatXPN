@@ -10,11 +10,24 @@ import FirebaseFirestore
 import NotraAuth
 import FirebaseAuth
 
+enum FullScreenTypeEnum: Identifiable {
+    case media(url: URL, type: MessageType)
+    case call(token: String, callId: String, apiKey: String, users: [ChatUser], create: Bool)
+    
+    var id: String {
+        switch self {
+        case .media(let url, let type):
+            return "media-\(url.absoluteString)-\(type)"
+        case .call(let token, let callId, let apiKey, let users, let create):
+            return callId
+        }
+    }
+}
+
 struct ChatRoom: View {
     let chat: ChatModelViewModel
     let callApiKey: String
     @State private var message: String = ""
-    
     @StateObject private var roomVM = RoomViewModel()
     
     var body: some View {
@@ -57,21 +70,28 @@ struct ChatRoom: View {
                                 .tint(.primary)
                         }
                     }.disabled(roomVM.loadingCall)
-                        .fullScreenCover(item: $roomVM.token, onDismiss: {
-                            roomVM.endCall()
-                        }, content: { token in
-                            VideoCall(token: token,
-                                      callId: roomVM.callId ?? "",
-                                      apiKey: callApiKey,
-                                      users: chat.users.filter{ $0.id != Auth.auth().currentUser?.uid },
-                                      create: !roomVM.joiningCall)
-                        })
                 }
             }.alert("error"~, isPresented: $roomVM.showAlert, actions: {
                 Button("gotIt"~, role: .cancel) { }
             }, message: {
                 Text(roomVM.alertMessage)
+            }).fullScreenCover(item: $roomVM.fullScreen, content: { screen in
+                switch screen {
+                case .media(let url, let type):
+                    SingleMediaContentPreview(url: url, mediaType: type)
+                case .call(let token, let callId, let apiKey, let users, let create):
+                    Text( "Full Screen of call" )
+                }
             })
+//            .fullScreenCover(item: $roomVM.token, onDismiss: {
+//                roomVM.endCall()
+//            }, content: { token in
+//                VideoCall(token: token,
+//                          callId: roomVM.callId ?? "",
+//                          apiKey: callApiKey,
+//                          users: chat.users.filter{ $0.id != Auth.auth().currentUser?.uid },
+//                          create: !roomVM.joiningCall)
+//            })
     }
 }
 

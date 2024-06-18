@@ -31,6 +31,8 @@ class RoomViewModel: AlertViewModel, ObservableObject {
     @Published var callId: String?
     @Published var joiningCall: Bool = false
     
+    @Published var fullScreen: FullScreenTypeEnum?
+    
     var manager: ChatServiceProtocol
     init(manager: ChatServiceProtocol = ChatService.shared) {
         self.manager = manager

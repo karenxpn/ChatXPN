@@ -12,7 +12,6 @@ import Popovers
 struct MessageCell: View {
     
     @EnvironmentObject var roomVM: RoomViewModel
-    @State private var present: Bool = false
     @State private var showPopOver: Bool = false
     
     let message: MessageViewModel
@@ -34,7 +33,7 @@ struct MessageCell: View {
                 .animation(.easeInOut, value: showPopOver)
                 .delaysTouches(for: 0.2) {
                     if message.type == .photo || message.type == .file {
-                        present.toggle()
+                        roomVM.fullScreen = .media(url: URL(string: message.content)!, type: message.type)
                     } else if message.type == .call && message.callEnded == false {
                         roomVM.getTokenAndSendVideoCallMessage(join: true, callId: message.id) { (token, callId) in
                             if let token, let callId {
@@ -52,10 +51,7 @@ struct MessageCell: View {
                                 UINotificationFeedbackGenerator().notificationOccurred(.success)
                             }
                         }
-                )
-                .fullScreenCover(isPresented: $present, content: {
-                    SingleMediaContentPreview(url: URL(string: message.content)!, mediaType: message.type)
-                }).popover(
+                ).popover(
                     present: $showPopOver,
                     attributes: {
                         $0.position = .absolute(
