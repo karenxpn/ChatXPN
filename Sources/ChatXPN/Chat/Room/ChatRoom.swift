@@ -16,6 +16,9 @@ struct ChatRoom: View {
     @State private var message: String = ""
     @StateObject private var roomVM = RoomViewModel()
     
+    @Environment(\.apiKey) var apiKey
+
+    
     var body: some View {
         ZStack {
             
@@ -29,6 +32,7 @@ struct ChatRoom: View {
             }
         }.ignoresSafeArea(.container, edges: .bottom)
             .onAppear {
+                print("the api key for the call is \(apiKey)")
                 roomVM.chatID = chat.id
                 roomVM.getMessages()
             }.navigationTitle("")
