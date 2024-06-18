@@ -9,10 +9,12 @@ import SwiftUI
 import FirebaseFirestore
 import NotraAuth
 import FirebaseAuth
+import CameraXPN
 
 enum FullScreenTypeEnum: Identifiable {
     case media(url: URL, type: MessageType)
     case call(token: String, callId: String, apiKey: String, users: [ChatUser], create: Bool)
+    case camera
     
     var id: String {
         switch self {
@@ -20,6 +22,8 @@ enum FullScreenTypeEnum: Identifiable {
             return "media-\(url.absoluteString)-\(type)"
         case .call(let token, let callId, let apiKey, let users, let create):
             return callId
+        case .camera:
+            return "camera"
         }
     }
 }
@@ -81,6 +85,14 @@ struct ChatRoom: View {
                     SingleMediaContentPreview(url: url, mediaType: type)
                 case .call(let token, let callId, let apiKey, let users, let create):
                     Text( "Full Screen of call" )
+                case .camera:
+                    CameraXPN(action: { url, data in
+                        roomVM.media = data
+                        //                roomVM.sendMessage(messageType: url.absoluteString.hasSuffix(".mov") ? .video : .photo)
+                    }, font: .custom("Inter-SemiBold", size: 14), permissionMessage: "enableAccessForBoth",
+                              recordVideoButtonColor: .primary,
+                              useMediaContent: "useThisMedia"~, videoAllowed: false)
+
                 }
             })
 //            .fullScreenCover(item: $roomVM.token, onDismiss: {
