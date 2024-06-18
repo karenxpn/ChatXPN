@@ -46,7 +46,6 @@ struct ChatRoom: View {
                         Button {
                             roomVM.getTokenAndSendVideoCallMessage(join: false) { (token, callId) in
                                 if let token, let callId {
-                                    roomVM.callId = callId
                                     roomVM.fullScreen = .call(token: token, callId: callId, users: chat.users, create: true)
                                 }
                             }
@@ -73,11 +72,10 @@ struct ChatRoom: View {
                               callId: callId,
                               apiKey: apiKey,
                               users: users.filter{ $0.id != Auth.auth().currentUser?.uid },
-                              create: create)
-                    .onDisappear {
-//                        roomVM.endCall()
-                        print("the full screen cover value is \(roomVM.fullScreen)")
-                    }
+                              create: create, endCall: { callId in
+                        roomVM.endCall(callId: callId)
+                        print("call ended")
+                    })
                     
                 case .camera:
                     CameraXPN(action: { url, data in

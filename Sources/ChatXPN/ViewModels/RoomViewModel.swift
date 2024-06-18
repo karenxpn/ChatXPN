@@ -26,9 +26,7 @@ class RoomViewModel: AlertViewModel, ObservableObject {
     private var cachedMessages: [String: MessageViewModel] = [:]
     
     @Published var replyMessage: MessageViewModel?
-    
-    @Published var callId: String?
-    
+        
     @Published var fullScreen: FullScreenTypeEnum?
     
     var manager: ChatServiceProtocol
@@ -169,11 +167,9 @@ class RoomViewModel: AlertViewModel, ObservableObject {
         }
     }
     
-    @MainActor func endCall() {
+    @MainActor func endCall(callId: String) {
         Task {
-            if let callId {
-                _ = await manager.markCallEnded(chatID: chatID, callId: callId)
-            }
+            await manager.markCallEnded(chatID: chatID, callId: callId)
         }
     }
     

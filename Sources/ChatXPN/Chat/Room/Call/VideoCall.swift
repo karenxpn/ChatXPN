@@ -23,12 +23,14 @@ struct VideoCall: View {
     private let callId: String
     private let create: Bool
     private let members: [Member]
+    private let endCall: (String) -> ()
     
-    init(token: String, callId: String, apiKey: String, users: [ChatUser], create: Bool = true) {
+    init(token: String, callId: String, apiKey: String, users: [ChatUser], create: Bool = true, endCall: @escaping(String) -> ()) {
         self.callId = callId
         self.create = create
         self.apiKey = apiKey
         self.members = users.map { Member(user: User(id: $0.id, name: $0.name)) }
+        self.endCall = endCall
         
         let user = User(
             id: userId,
@@ -86,7 +88,10 @@ struct VideoCall: View {
             print(newValue)
         }.onChange(of: viewModel.participants, { oldValue, newValue in
             if oldValue.count == 1 && newValue.count == 0 {
-                Task { try await viewModel.call?.end() }
+                Task {
+                    try await viewModel.call?.end()
+                    endCall(callId)
+                }
             }
             print("old value is \(oldValue)")
             print("new value is \(newValue)")
