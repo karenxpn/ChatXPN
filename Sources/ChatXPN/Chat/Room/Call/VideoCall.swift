@@ -76,14 +76,12 @@ struct VideoCall: View {
                     viewModel.acceptCall(callType: .default, callId: callId)
                 }
             }
+        }.onDisappear {
+            Task { try await viewModel.call?.end() }
         }.onChange(of: viewModel.callingState) { oldValue, newValue in
             if newValue == .idle {
-                Task {
-                    try await viewModel.call?.end()
-                    
-                    // mark the message as ended call
-                    dismiss()
-                }
+                // mark the message as ended call
+                dismiss()
             }
             print(newValue)
         }.alert("error"~, isPresented: $viewModel.errorAlertShown, actions: {
