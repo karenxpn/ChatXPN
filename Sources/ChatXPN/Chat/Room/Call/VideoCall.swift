@@ -91,7 +91,7 @@ struct VideoCall: View {
             if oldValue.count == 1 && newValue.count == 0 {
                 Task {
                     try await viewModel.call?.end()
-                    endCall(callId)
+                    dismiss()
                 }
             }
             print("old value is \(oldValue)")
