@@ -78,7 +78,6 @@ struct VideoCall: View {
             }
         }.onChange(of: viewModel.callingState) { oldValue, newValue in
             if newValue == .idle {
-                // mark the message as ended call
                 Task {
                     try await viewModel.call?.end()
                     dismiss()
@@ -86,6 +85,9 @@ struct VideoCall: View {
             }
             print(newValue)
         }.onChange(of: viewModel.participants, { oldValue, newValue in
+            if oldValue.count == 1 && newValue.count == 0 {
+                Task { try await viewModel.call?.end() }
+            }
             print("old value is \(oldValue)")
             print("new value is \(newValue)")
         }).alert("error"~, isPresented: $viewModel.errorAlertShown, actions: {
