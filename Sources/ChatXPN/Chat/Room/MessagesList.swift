@@ -31,6 +31,10 @@ struct MessagesList: View {
                                 if message.received && !message.seen && !messages.contains(where: { $0.callEnded == false }) {
                                     roomVM.markMessageRead(messageID: message.id)
                                 }
+                                
+                                if messages.contains(where: {$0.callEnded == false}) {
+                                    print(messages.filter(where: {$0.callEnded == false}))
+                                }
                             }
                     }
                     
