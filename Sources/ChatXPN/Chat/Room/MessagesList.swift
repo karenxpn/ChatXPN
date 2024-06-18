@@ -27,10 +27,10 @@ struct MessagesList: View {
                                 if message.id == messages.last?.id && !roomVM.loading && roomVM.lastMessage != nil {
                                     roomVM.getMessages()
                                 }
-                                
-                                if message.received && !message.seen {
-                                    roomVM.markMessageRead(messageID: message.id)
-                                }
+//                                
+//                                if message.received && !message.seen {
+//                                    roomVM.markMessageRead(messageID: message.id)
+//                                }
                             }
                     }
                     
