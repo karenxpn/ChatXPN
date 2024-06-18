@@ -11,26 +11,8 @@ import NotraAuth
 import FirebaseAuth
 import CameraXPN
 
-enum FullScreenTypeEnum: Identifiable {
-    case media(url: URL, type: MessageType)
-    case call(token: String, callId: String, apiKey: String, users: [ChatUser], create: Bool)
-    case camera
-    
-    var id: String {
-        switch self {
-        case .media(let url, let type):
-            return "media-\(url.absoluteString)-\(type)"
-        case .call(let token, let callId, let apiKey, let users, let create):
-            return callId
-        case .camera:
-            return "camera"
-        }
-    }
-}
-
 struct ChatRoom: View {
     let chat: ChatModelViewModel
-    let callApiKey: String
     @State private var message: String = ""
     @StateObject private var roomVM = RoomViewModel()
     
@@ -83,12 +65,12 @@ struct ChatRoom: View {
                 switch screen {
                 case .media(let url, let type):
                     SingleMediaContentPreview(url: url, mediaType: type)
-                case .call(let token, let callId, let apiKey, let users, let create):
+                case .call(let token, let callId, let users, let create):
                     Text( "Full Screen of call" )
                 case .camera:
                     CameraXPN(action: { url, data in
                         roomVM.media = data
-                        //                roomVM.sendMessage(messageType: url.absoluteString.hasSuffix(".mov") ? .video : .photo)
+                        roomVM.sendMessage(messageType: .photo)
                     }, font: .custom("Inter-SemiBold", size: 14), permissionMessage: "enableAccessForBoth",
                               recordVideoButtonColor: .primary,
                               useMediaContent: "useThisMedia"~, videoAllowed: false)
@@ -108,5 +90,5 @@ struct ChatRoom: View {
 }
 
 #Preview {
-    ChatRoom(chat: PreviewModels.chats[0], callApiKey: "")
+    ChatRoom(chat: PreviewModels.chats[0])
 }

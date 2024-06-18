@@ -30,10 +30,10 @@ public class ChatViewRouter: AlertViewModel, ObservableObject {
     @ViewBuilder
     func buildChatView(page: ChatPath) -> some View {
         switch page {
-        case .chat(let callApiKey):
-            Chat(callApiKey: callApiKey)
-        case .chatRoom(let chat, let callApiKey):
-            ChatRoom(chat: chat, callApiKey: callApiKey)
+        case .chat:
+            Chat()
+        case .chatRoom(let chat):
+            ChatRoom(chat: chat)
         }
     }
     

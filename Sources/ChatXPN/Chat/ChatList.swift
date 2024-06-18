@@ -10,12 +10,11 @@ import SwiftUI
 struct ChatList: View {
     @EnvironmentObject var chatVM: ChatViewModel
     @State private var searchText = ""
-    let callApiKey: String
     
     var body: some View {
         List {
             ForEach(searchResults, id: \.id) { chat in
-                ChatListCell(chat: chat, callApiKey: callApiKey)
+                ChatListCell(chat: chat)
                     .listRowInsets(EdgeInsets())
 
             }
@@ -47,6 +46,6 @@ struct ChatList: View {
 }
 
 #Preview {
-    ChatList(callApiKey: "")
+    ChatList()
         .environmentObject(ChatViewModel())
 }
