@@ -80,24 +80,17 @@ struct VideoCall: View {
                     viewModel.acceptCall(callType: .default, callId: callId)
                 }
             }
-        }.onCallEnded({ call, dismissCallEnded in
-            let _ = print("call ended")
-        }).onChange(of: viewModel.callingState) { oldValue, newValue in
+        }.onChange(of: viewModel.callingState) { oldValue, newValue in
             if newValue == .idle {
-                Task {
-                    try await viewModel.call?.end()
-                    print("participants \(viewModel.participants)")
-                    dismiss()
-                }
+                print("participants \(viewModel.participants)")
+                handleCallEnd()
+
             }
             print(newValue)
         }.onChange(of: viewModel.participants, { oldValue, newValue in
             if (oldValue.count == 1 && newValue.isEmpty) || newValue.isEmpty {
                 print("no participants -> dismissing")
-                Task {
-                    try await viewModel.call?.end()
-                    dismiss()
-                }
+                handleCallEnd()
             }
             print("old value is \(oldValue)")
             print("new value is \(newValue)")
@@ -106,5 +99,16 @@ struct VideoCall: View {
         }, message: {
             Text(viewModel.error?.localizedDescription ?? "")
         })
+    }
+    
+    private func handleCallEnd() {
+        Task {
+            if viewModel.call != nil {
+                try await viewModel.call?.end()
+                print("call ended")
+//                endCall(callId) // Notify parent about the call end
+            }
+            dismiss()
+        }
     }
 }
