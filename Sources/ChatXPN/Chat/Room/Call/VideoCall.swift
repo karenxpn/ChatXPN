@@ -98,7 +98,9 @@ struct VideoCall: View {
             Button("ok"~, role: .cancel) { dismiss() }
         }, message: {
             Text(viewModel.error?.localizedDescription ?? "")
-        })
+        }).onDisappear {
+            handleCallEnd()
+        }
     }
     
     private func handleCallEnd() {
