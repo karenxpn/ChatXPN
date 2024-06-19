@@ -106,6 +106,8 @@ struct VideoCall: View {
     private func handleCallEnd() {
         Task {
             if viewModel.call != nil {
+                try await viewModel.call?.camera.disable()
+                try await viewModel.call?.microphone.disable()
                 try await viewModel.call?.end()
                 endCall(callId) // Notify parent about the call end
             }
