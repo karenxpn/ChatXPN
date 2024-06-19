@@ -82,7 +82,6 @@ struct VideoCall: View {
             if (oldValue.count == 1 && newValue.isEmpty) || newValue.isEmpty {
                 print("no participants -> dismissing")
                 Task {
-                    try await viewModel.call?.end()
                     dismiss()
                 }
             }
