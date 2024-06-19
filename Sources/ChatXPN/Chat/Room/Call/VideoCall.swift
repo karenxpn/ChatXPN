@@ -60,6 +60,8 @@ struct VideoCall: View {
         )
               
         _viewModel = StateObject(wrappedValue: .init())
+        
+        print("initialized the video call view")
     }
     
     var body: some View {
