@@ -80,7 +80,9 @@ struct VideoCall: View {
                     viewModel.acceptCall(callType: .default, callId: callId)
                 }
             }
-        }.onChange(of: viewModel.callingState) { oldValue, newValue in
+        }.onCallEnded({ call, dismissCallEnded in
+            let _ = print("call ended")
+        }).onChange(of: viewModel.callingState) { oldValue, newValue in
             if newValue == .idle {
                 Task {
                     try await viewModel.call?.end()
