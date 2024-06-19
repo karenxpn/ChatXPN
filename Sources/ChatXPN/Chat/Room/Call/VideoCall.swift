@@ -78,15 +78,6 @@ struct VideoCall: View {
                     viewModel.acceptCall(callType: .default, callId: callId)
                 }
             }
-        }.onChange(of: viewModel.callingState) { oldValue, newValue in
-            if newValue == .idle {
-                Task {
-                    try await viewModel.call?.end()
-                    print("participants \(viewModel.participants)")
-                    dismiss()
-                }
-            }
-            print(newValue)
         }.onChange(of: viewModel.participants, { oldValue, newValue in
             if (oldValue.count == 1 && newValue.isEmpty) || newValue.isEmpty {
                 print("no participants -> dismissing")
