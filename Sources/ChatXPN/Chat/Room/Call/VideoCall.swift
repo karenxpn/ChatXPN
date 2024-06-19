@@ -107,8 +107,7 @@ struct VideoCall: View {
         Task {
             if viewModel.call != nil {
                 try await viewModel.call?.end()
-                print("call ended")
-//                endCall(callId) // Notify parent about the call end
+                endCall(callId) // Notify parent about the call end
             }
             dismiss()
         }
