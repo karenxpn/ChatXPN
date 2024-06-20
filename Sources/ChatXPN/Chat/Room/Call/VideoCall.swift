@@ -60,7 +60,6 @@ struct VideoCall: View {
         )
               
         _viewModel = StateObject(wrappedValue: .init())
-        viewModel.participantAutoLeavePolicy = LastParticipantAutoLeavePolicy()
         
         print("initialized the video call view")
     }
@@ -74,6 +73,8 @@ struct VideoCall: View {
             }
         }.onAppear {
             Task {
+                viewModel.participantAutoLeavePolicy = LastParticipantAutoLeavePolicy()
+                
                 guard let call = viewModel.call else { return }
                 if create {
                     viewModel.startCall(callType: .default, callId: callId, members: members, ring: true)
