@@ -78,15 +78,32 @@ struct VideoCall: View {
                 guard viewModel.call == nil else { return }
                 if create {
                     viewModel.startCall(callType: .default, callId: callId, members: members, ring: true)
+                    if let call = viewModel.call {
+                        print("subscribe to events")
+                        for await event in call.subscribe(for: CallEndedEvent.self) {
+                            print("call ended event", event)
+                        }
+                        
+                        for await event in call.subscribe() {
+                            print("event \(event)")
+                        }
+                    }
                 } else {
                     viewModel.acceptCall(callType: .default, callId: callId)
-                }
-                
-                if let call = viewModel.call {
-                    for await event in call.subscribe(for: CallEndedEvent.self) {
-                        print("call ended event", event)
+                    if let call = viewModel.call {
+                        print("subscribe to events")
+
+                        for await event in call.subscribe(for: CallEndedEvent.self) {
+                            print("call ended event", event)
+                        }
+                        
+                        for await event in call.subscribe() {
+                            print("event \(event)")
+                        }
                     }
                 }
+                
+
             }
         }.onChange(of: viewModel.callingState) { oldValue, newValue in
             if newValue == .idle {
