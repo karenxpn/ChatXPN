@@ -86,7 +86,6 @@ struct VideoCall: View {
             }
         }.onChange(of: viewModel.callingState) { oldValue, newValue in
             if newValue == .idle {
-                print("participants \(viewModel.participants)")
                 handleCallEnd()
             }
             print(newValue)
@@ -100,6 +99,7 @@ struct VideoCall: View {
     private func handleCallEnd() {
         viewModel.hangUp()
         print("hang up the call")
+        endCall(callId)
         dismiss()
 //        Task {
 //            viewModel.hangUp()
