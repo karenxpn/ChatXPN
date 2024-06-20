@@ -74,11 +74,15 @@ struct VideoCall: View {
             }
         }.onAppear {
             Task {
-                guard viewModel.call == nil else { return }
+                guard let call = viewModel.call else { return }
                 if create {
                     viewModel.startCall(callType: .default, callId: callId, members: members, ring: true)
                 } else {
                     viewModel.acceptCall(callType: .default, callId: callId)
+                }
+                
+                for await event in call.subscribe(for: CallEndedEvent.self) {
+                    print("call ended event", event)
                 }
             }
         }.onChange(of: viewModel.callingState) { oldValue, newValue in
