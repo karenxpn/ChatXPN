@@ -69,44 +69,32 @@ struct VideoCall: View {
     }
     
     var body: some View {
-        VStack {
-            if viewModel.call != nil {
-                CallContainer(viewFactory: DefaultViewFactory.shared, viewModel: viewModel)
-            } else {
-                Text("loading"~)
-            }
-        }.task {
-            guard viewModel.call == nil else { return }
-            if create {
-                viewModel.startCall(callType: .default, callId: callId, members: members, ring: true)
-            } else {
-                viewModel.acceptCall(callType: .default, callId: callId)
+        Text("loading...")
+            .modifier(CallModifier(viewModel: viewModel))
+            .task {
+                guard viewModel.call == nil, create else {
+                    return
+                }
 
+                viewModel.startCall(
+                    callType: .default,
+                    callId: callId,
+                    members: members,
+                    ring: true
+                )
             }
-        }
-        .onReceive(NotificationCenter.default.publisher(for: .init(CallNotification.callEnded))) { _ in dismiss() }
-//        .onReceive(viewModel.$callingState.map {
-//            print("the calling state is \($0)")
-//            switch $0 {
-//            case .incoming:     return true
-//            default:            return false
-//            }
-//        }) { hasIncomingCall in
-//            guard hasIncomingCall else { return }
-//            viewModel.acceptCall(callType: .default, callId: callId)
-//        }
-        .onReceive(viewModel.$call, perform: { newCall in
-            eventSubscriptionTask?.cancel()
-            eventSubscriptionTask = nil
-            
-            guard let newCall else { return }
-            subscribeToCallEvents(on: newCall)
-        })
-        .alert("error"~, isPresented: $viewModel.errorAlertShown, actions: {
-            Button("ok"~, role: .cancel) { dismiss() }
-        }, message: {
-            Text(viewModel.error?.localizedDescription ?? "")
-        })
+            .onReceive(viewModel.$call, perform: { newCall in
+                eventSubscriptionTask?.cancel()
+                eventSubscriptionTask = nil
+
+                guard let newCall else { return }
+                subscribeToCallEvents(on: newCall)
+            })
+            .alert("error"~, isPresented: $viewModel.errorAlertShown, actions: {
+                Button("ok"~, role: .cancel) { dismiss() }
+            }, message: {
+                Text(viewModel.error?.localizedDescription ?? "")
+            })
     }
     
     private func subscribeToCallEvents(on call: Call) {
