@@ -81,6 +81,7 @@ struct VideoCall: View {
         }
         .onReceive(NotificationCenter.default.publisher(for: .init(CallNotification.callEnded))) { _ in dismiss() }
         .onReceive(viewModel.$callingState.map {
+            print("the calling state is \($0)")
             switch $0 {
             case .incoming:     return true
             default:            return false
