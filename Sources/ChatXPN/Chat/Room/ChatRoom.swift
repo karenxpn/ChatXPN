@@ -13,22 +13,20 @@ import CameraXPN
 
 struct ChatRoom: View {
     let chat: ChatModelViewModel
-    @State private var message: String = ""
     @StateObject private var roomVM = RoomViewModel()
     @Environment(\.apiKey) var apiKey
     
     var body: some View {
         ZStack {
             
-            MessagesList(messages: roomVM.messages)
-                .environmentObject(roomVM)
+            MessagesList()
             
             VStack {
                 Spacer()
                 MessageBar()
-                    .environmentObject(roomVM)
             }
-        }.ignoresSafeArea(.container, edges: .bottom)
+        }.environmentObject(roomVM)
+        .ignoresSafeArea(.container, edges: .bottom)
             .onAppear {
                 roomVM.chatID = chat.id
                 roomVM.getMessages()
