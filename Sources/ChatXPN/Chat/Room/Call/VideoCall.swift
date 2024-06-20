@@ -12,7 +12,7 @@ import FirebaseAuth
 
 
 struct VideoCall: View {
-    @StateObject var viewModel: CallViewModel
+    @ObservedObject var viewModel: CallViewModel
     @Environment(\.dismiss) var dismiss
     
     
@@ -59,7 +59,7 @@ struct VideoCall: View {
             appearance: customAppearance
         )
         
-        _viewModel = StateObject(wrappedValue: .init())
+        viewModel = .init()
         
         print("initialized the video call view")
     }
