@@ -87,14 +87,7 @@ struct VideoCall: View {
 
             }
             print(newValue)
-        }.onChange(of: viewModel.participants, { oldValue, newValue in
-            if (oldValue.count == 1 && newValue.isEmpty) || newValue.isEmpty {
-                print("no participants -> dismissing")
-                handleCallEnd()
-            }
-            print("old value is \(oldValue)")
-            print("new value is \(newValue)")
-        }).alert("error"~, isPresented: $viewModel.errorAlertShown, actions: {
+        }.alert("error"~, isPresented: $viewModel.errorAlertShown, actions: {
             Button("ok"~, role: .cancel) { dismiss() }
         }, message: {
             Text(viewModel.error?.localizedDescription ?? "")
