@@ -99,14 +99,8 @@ struct VideoCall: View {
     private func handleCallEnd() {
         viewModel.hangUp()
         print("hang up the call")
-        endCall(callId)
+//        endCall(callId)
         dismiss()
-//        Task {
-//            viewModel.hangUp()
-//            print("hang up the call")
-//            endCall(callId) // Notify parent about the call end
-//            dismiss()
-//        }
     }
     
     private func subscribeToCallEvents() async {
