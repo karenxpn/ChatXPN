@@ -98,6 +98,8 @@ struct VideoCall: View {
     }
     
     private func handleCallEnd() {
+        viewModel.hangUp()
+        print("hang up the call")
 //        Task {
 //            viewModel.hangUp()
 //            print("hang up the call")
