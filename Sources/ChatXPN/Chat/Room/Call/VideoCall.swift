@@ -14,7 +14,7 @@ import FirebaseAuth
 struct VideoCall: View {
     @StateObject var viewModel: CallViewModel
     @Environment(\.dismiss) var dismiss
-
+    
     
     private var client: StreamVideo
     
@@ -43,7 +43,7 @@ struct VideoCall: View {
         customSound.bundle = Bundle.main
         // Swap the outgoing call sound with the custom one
         customSound.outgoingCallSound = "ringing.mp3"
-
+        
         // Create an instance of the appearance class
         let customAppearance = Appearance(sounds: customSound)
         
@@ -55,10 +55,10 @@ struct VideoCall: View {
         )
         
         _ = StreamVideoUI(
-          streamVideo: client,
-          appearance: customAppearance
+            streamVideo: client,
+            appearance: customAppearance
         )
-              
+        
         _viewModel = StateObject(wrappedValue: .init())
         
         print("initialized the video call view")
@@ -75,15 +75,17 @@ struct VideoCall: View {
             Task {
                 viewModel.participantAutoLeavePolicy = LastParticipantAutoLeavePolicy()
                 
-                guard let call = viewModel.call else { return }
+                guard viewModel.call == nil else { return }
                 if create {
                     viewModel.startCall(callType: .default, callId: callId, members: members, ring: true)
                 } else {
                     viewModel.acceptCall(callType: .default, callId: callId)
                 }
                 
-                for await event in call.subscribe(for: CallEndedEvent.self) {
-                    print("call ended event", event)
+                if let call = viewModel.call {
+                    for await event in call.subscribe(for: CallEndedEvent.self) {
+                        print("call ended event", event)
+                    }
                 }
             }
         }.onChange(of: viewModel.callingState) { oldValue, newValue in
@@ -101,11 +103,9 @@ struct VideoCall: View {
     
     private func handleCallEnd() {
         Task {
-            if viewModel.call != nil {
-                viewModel.hangUp()
-                print("hang up the call")
-                endCall(callId) // Notify parent about the call end
-            }
+            viewModel.hangUp()
+            print("hang up the call")
+            endCall(callId) // Notify parent about the call end
             dismiss()
         }
     }
