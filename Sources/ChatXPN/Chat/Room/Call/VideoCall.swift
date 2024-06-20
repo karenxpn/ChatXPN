@@ -108,7 +108,8 @@ struct VideoCall: View {
             if viewModel.call != nil {
                 try await viewModel.call?.camera.disable()
                 try await viewModel.call?.microphone.disable()
-                try await viewModel.call?.end()
+                let result = try await viewModel.call?.end()
+                print(result)
                 endCall(callId) // Notify parent about the call end
             }
             dismiss()
