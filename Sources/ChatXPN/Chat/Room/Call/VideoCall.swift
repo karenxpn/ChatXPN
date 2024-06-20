@@ -78,32 +78,11 @@ struct VideoCall: View {
                 guard viewModel.call == nil else { return }
                 if create {
                     viewModel.startCall(callType: .default, callId: callId, members: members, ring: true)
-                    if let call = viewModel.call {
-                        print("subscribe to events")
-                        for await event in call.subscribe(for: CallEndedEvent.self) {
-                            print("call ended event", event)
-                        }
-                        
-                        for await event in call.subscribe() {
-                            print("event \(event)")
-                        }
-                    }
+                    await subscribeToCallEvents()
                 } else {
                     viewModel.acceptCall(callType: .default, callId: callId)
-                    if let call = viewModel.call {
-                        print("subscribe to events")
-
-                        for await event in call.subscribe(for: CallEndedEvent.self) {
-                            print("call ended event", event)
-                        }
-                        
-                        for await event in call.subscribe() {
-                            print("event \(event)")
-                        }
-                    }
+                    await subscribeToCallEvents()
                 }
-                
-
             }
         }.onChange(of: viewModel.callingState) { oldValue, newValue in
             if newValue == .idle {
@@ -119,11 +98,25 @@ struct VideoCall: View {
     }
     
     private func handleCallEnd() {
-        Task {
-            viewModel.hangUp()
-            print("hang up the call")
-            endCall(callId) // Notify parent about the call end
-            dismiss()
+//        Task {
+//            viewModel.hangUp()
+//            print("hang up the call")
+//            endCall(callId) // Notify parent about the call end
+//            dismiss()
+//        }
+    }
+    
+    private func subscribeToCallEvents() async {
+        if let call = viewModel.call {
+            print("subscribe to events")
+
+            for await event in call.subscribe(for: CallEndedEvent.self) {
+                print("call ended event", event)
+            }
+            
+            for await event in call.subscribe() {
+                print("event \(event)")
+            }
         }
     }
 }
