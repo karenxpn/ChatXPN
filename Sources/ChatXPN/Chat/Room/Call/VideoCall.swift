@@ -77,16 +77,6 @@ struct VideoCall: View {
             viewModel.joinCall(callType: .default, callId: callId)
         }
         .onReceive(NotificationCenter.default.publisher(for: .init(CallNotification.callEnded))) { _ in handleCallEnd() }
-//        .onReceive(viewModel.$callingState.map {
-//            print("the calling state is \($0)")
-//            switch $0 {
-//            case .incoming:     return true
-//            default:            return false
-//            }
-//        }) { hasIncomingCall in
-//            guard hasIncomingCall else { return }
-//            viewModel.acceptCall(callType: .default, callId: callId)
-//        }
         .onReceive(viewModel.$call, perform: { newCall in
             eventSubscriptionTask?.cancel()
             eventSubscriptionTask = nil
