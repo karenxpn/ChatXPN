@@ -90,6 +90,10 @@ struct VideoCall: View {
         .onChange(of: viewModel.participants, { oldValue, newValue in
             print("participants before = \(oldValue.count)")
             print("participants after = \(newValue.count)")
+
+            if oldValue.count == 1 && newValue.isEmpty {
+                dismiss()
+            }
         })
         .onReceive(viewModel.$call, perform: { newCall in
             eventSubscriptionTask?.cancel()
