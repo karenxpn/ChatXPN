@@ -87,14 +87,6 @@ struct VideoCall: View {
 //            guard hasIncomingCall else { return }
 //            viewModel.acceptCall(callType: .default, callId: callId)
 //        }
-        .onChange(of: viewModel.participants, { oldValue, newValue in
-            print("participants before = \(oldValue.count)")
-            print("participants after = \(newValue.count)")
-
-            if oldValue.count == 1 && newValue.isEmpty {
-                viewModel.hangUp()
-            }
-        })
         .onReceive(viewModel.$call, perform: { newCall in
             eventSubscriptionTask?.cancel()
             eventSubscriptionTask = nil
