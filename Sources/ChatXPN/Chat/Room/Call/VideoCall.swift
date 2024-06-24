@@ -79,7 +79,7 @@ struct VideoCall: View {
             guard viewModel.call == nil else { return }
             viewModel.joinCall(callType: .default, callId: callId)
         }
-        .onReceive(NotificationCenter.default.publisher(for: .init(CallNotification.callEnded))) { _ in dismiss() }
+        .onReceive(NotificationCenter.default.publisher(for: .init(CallNotification.callEnded))) { _ in handleCallEnd() }
 //        .onReceive(viewModel.$callingState.map {
 //            print("the calling state is \($0)")
 //            switch $0 {
@@ -102,6 +102,12 @@ struct VideoCall: View {
         }, message: {
             Text(viewModel.error?.localizedDescription ?? "")
         })
+    }
+    
+    private func handleCallEnd() {
+        viewModel.hangUp()
+        endCall(callId)
+        dismiss()
     }
     
     private func subscribeToCallEvents(on call: Call) {
