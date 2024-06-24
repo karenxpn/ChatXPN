@@ -92,7 +92,7 @@ struct VideoCall: View {
             print("participants after = \(newValue.count)")
 
             if oldValue.count == 1 && newValue.isEmpty {
-                dismiss()
+                viewModel.hangUp()
             }
         })
         .onReceive(viewModel.$call, perform: { newCall in
