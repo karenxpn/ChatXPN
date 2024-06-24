@@ -17,7 +17,6 @@ struct VideoCall: View {
     private let apiKey: String
     private let userId: String = Auth.auth().currentUser?.uid ?? ""
     private let callId: String
-    private let create: Bool
     private let members: [Member]
     private let endCall: (String) -> ()
     
@@ -28,11 +27,9 @@ struct VideoCall: View {
         callId: String,
         apiKey: String,
         users: [ChatUser],
-        create: Bool = true,
         endCall: @escaping(String) -> ()
     ) {
         self.callId = callId
-        self.create = create
         self.apiKey = apiKey
         self.members = users.map { Member(user: User(id: $0.id, name: $0.name)) }
         self.endCall = endCall
@@ -93,7 +90,6 @@ struct VideoCall: View {
         .onChange(of: viewModel.participants, { oldValue, newValue in
             print("participants before = \(oldValue.count)")
             print("participants after = \(newValue.count)")
-
         })
         .onReceive(viewModel.$call, perform: { newCall in
             eventSubscriptionTask?.cancel()

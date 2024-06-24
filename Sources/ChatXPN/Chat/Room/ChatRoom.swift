@@ -26,7 +26,7 @@ struct ChatRoom: View {
                 MessageBar()
             }
         }.environmentObject(roomVM)
-        .ignoresSafeArea(.container, edges: .bottom)
+            .ignoresSafeArea(.container, edges: .bottom)
             .onAppear {
                 roomVM.chatID = chat.id
                 roomVM.getMessages()
@@ -44,7 +44,7 @@ struct ChatRoom: View {
                         Button {
                             roomVM.getTokenAndSendVideoCallMessage(join: false) { (token, callId) in
                                 if let token, let callId {
-                                    roomVM.fullScreen = .call(token: token, callId: callId, users: chat.users, create: true)
+                                    roomVM.fullScreen = .call(token: token, callId: callId, users: chat.users)
                                 }
                             }
                         } label: {
@@ -56,7 +56,7 @@ struct ChatRoom: View {
                         }.disabled(roomVM.loadingCall)
                     }
                 }
-
+                
             }.alert("error"~, isPresented: $roomVM.showAlert, actions: {
                 Button("gotIt"~, role: .cancel) { }
             }, message: {
@@ -65,12 +65,12 @@ struct ChatRoom: View {
                 switch screen {
                 case .media(let url, let type):
                     SingleMediaContentPreview(url: url, mediaType: type)
-                case .call(let token, let callId, let users, let create):
+                case .call(let token, let callId, let users):
                     VideoCall(token: token,
                               callId: callId,
                               apiKey: apiKey,
                               users: users.filter{ $0.id != Auth.auth().currentUser?.uid },
-                              create: create, endCall: { callId in
+                              endCall: { callId in
                         roomVM.endCall(callId: callId)
                         print("call ended")
                     })
