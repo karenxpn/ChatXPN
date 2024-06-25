@@ -34,7 +34,7 @@ struct MessageCell: View {
                 .delaysTouches(for: 0.2) {
                     if message.type == .photo || message.type == .file {
                         roomVM.fullScreen = .media(url: URL(string: message.content)!, type: message.type)
-                    } else if message.type == .call && message.callEnded == false {
+                    } else if message.type == .call && message.callEnded == false && !roomVM.loadingCall {
                         roomVM.getTokenAndSendVideoCallMessage(join: true, callId: message.id) { (token, callId) in
                             if let token, let callId {
                                 roomVM.fullScreen = .call(token: token, callId: callId, users: [])

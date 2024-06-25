@@ -30,6 +30,7 @@ struct CallMessageContent: View {
                                 
                                 if roomVM.loadingCall {
                                     ProgressView()
+                                        .tint(.gray)
                                         .scaleEffect(0.5)
                                 }
                             }.padding(.horizontal, 10)
