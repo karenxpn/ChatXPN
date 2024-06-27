@@ -7,6 +7,6 @@
 
 import Foundation
 public enum ChatPath: Equatable, Hashable {
-    case chat(apiKey: String)
-    case chatRoom(chat: ChatModelViewModel, apiKey: String)
+    case chat
+    case chatRoom(chat: ChatModelViewModel)
 }

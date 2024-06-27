@@ -114,3 +114,20 @@ enum Paths : RawRepresentable, CaseIterable, Codable {
         }
     }
 }
+
+enum FullScreenTypeEnum: Identifiable {
+    case media(url: URL, type: MessageType)
+    case call(token: String, callId: String, users: [ChatUser])
+    case camera
+    
+    var id: String {
+        switch self {
+        case .media(let url, let type):
+            return "media-\(url.absoluteString)-\(type)"
+        case .call(_, let callId, _):
+            return callId
+        case .camera:
+            return "camera"
+        }
+    }
+}

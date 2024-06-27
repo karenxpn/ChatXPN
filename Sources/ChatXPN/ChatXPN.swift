@@ -7,19 +7,17 @@ public struct ChatXPN: View {
     @EnvironmentObject private var viewRouter: ChatViewRouter
     
     let chat: ChatModelViewModel?
-    let callApiKey: String
     
-    public init(chat: ChatModelViewModel? = nil, callApiKey: String) {
+    public init(chat: ChatModelViewModel? = nil) {
         self.chat = chat
-        self.callApiKey = callApiKey
     }
     
     public var body: some View {
         if let chat {
-            ChatRoom(chat: chat, callApiKey: callApiKey)
+            ChatRoom(chat: chat)
         } else {
             NavigationStack(path: $viewRouter.chatPath) {
-                Chat(callApiKey: callApiKey)
+                Chat()
                     .navigationDestination(for: ChatPath.self) { page in
                         viewRouter.buildChatView(page: page)
                     }

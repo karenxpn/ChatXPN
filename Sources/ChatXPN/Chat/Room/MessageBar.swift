@@ -6,16 +6,13 @@
 //
 
 import SwiftUI
-import CameraXPN
 import PDFKit
 
 struct MessageBar: View {
     @EnvironmentObject var roomVM: RoomViewModel
     
     @State private var openGallery: Bool = false
-    @State private var openCamera: Bool = false
     @State private var openFileImporter: Bool = false
-    
     
     var body: some View {
         VStack( spacing: 0) {
@@ -33,7 +30,7 @@ struct MessageBar: View {
                     }
                     
                     Button {
-                        openCamera.toggle()
+                        roomVM.fullScreen = .camera
                     } label: {
                         Label("openCamera"~, systemImage: "camera")
                     }
@@ -73,15 +70,7 @@ struct MessageBar: View {
                 roomVM.media = content
                 roomVM.sendMessage(messageType: .photo)
             }
-        }.fullScreenCover(isPresented: $openCamera, content: {
-            CameraXPN(action: { url, data in
-                roomVM.media = data
-                //                roomVM.sendMessage(messageType: url.absoluteString.hasSuffix(".mov") ? .video : .photo)
-            }, font: .custom("Inter-SemiBold", size: 14), permissionMessage: "enableAccessForBoth",
-                      recordVideoButtonColor: .primary,
-                      useMediaContent: "useThisMedia"~, videoAllowed: false)
-            
-        }).fileImporter(isPresented: $openFileImporter, allowedContentTypes: [.pdf], allowsMultipleSelection: false) { result in
+        }.fileImporter(isPresented: $openFileImporter, allowedContentTypes: [.pdf], allowsMultipleSelection: false) { result in
             switch result {
             case .failure(let error):
                 roomVM.makeAlert(with: error, message: &roomVM.alertMessage, alert: &roomVM.showAlert)

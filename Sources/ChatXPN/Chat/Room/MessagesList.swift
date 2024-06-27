@@ -9,7 +9,6 @@ import SwiftUI
 
 struct MessagesList: View {
     @EnvironmentObject var roomVM: RoomViewModel
-    let messages: [MessageViewModel]
         
     var body: some View {
         ScrollView(showsIndicators: false) {
@@ -17,18 +16,18 @@ struct MessagesList: View {
                 
                 LazyVStack(spacing: 0) {
                     
-                    ForEach(messages, id: \.id) { message in
+                    ForEach(roomVM.messages, id: \.id) { message in
                         MessageCell(message: message)
                             .environmentObject(roomVM)
-                            .padding(.bottom, messages[0].id == message.id ? UIScreen.main.bounds.size.height * 0.1 : 0)
-                            .padding(.bottom, messages[0].id == message.id && roomVM.replyMessage != nil ? UIScreen.main.bounds.height * 0.1 : 0)
+                            .padding(.bottom, roomVM.messages[0].id == message.id ? UIScreen.main.bounds.size.height * 0.1 : 0)
+                            .padding(.bottom, roomVM.messages[0].id == message.id && roomVM.replyMessage != nil ? UIScreen.main.bounds.height * 0.1 : 0)
                             .rotationEffect(.radians(3.14))
                             .task {
-                                if message.id == messages.last?.id && !roomVM.loading && roomVM.lastMessage != nil {
+                                if message.id == roomVM.messages.last?.id && !roomVM.loading && roomVM.lastMessage != nil {
                                     roomVM.getMessages()
                                 }
                                 
-                                if message.received && !message.seen {
+                                if message.received && !message.seen && !roomVM.messages.contains(where: { $0.callEnded == false && $0.type == .call }) {
                                     roomVM.markMessageRead(messageID: message.id)
                                 }
                             }
@@ -49,6 +48,6 @@ struct MessagesList: View {
 
 
 #Preview {
-    MessagesList(messages: [PreviewModels.message, PreviewModels.emojiMessage, PreviewModels.photoMessage])
+    MessagesList()
         .environmentObject(RoomViewModel())
 }
