@@ -42,4 +42,32 @@ public class ChatViewRouter: AlertViewModel, ObservableObject {
             self.hasUnreadMessage = hasMessage
         }
     }
+    
+    func handleDeeplink(from url: URL) {
+        guard let host = url.host else { return }
+
+        if host == "notralaw.page.link" {
+            return
+        }
+        
+        guard url.pathComponents.count >= 2 else { return }
+        
+        let destination = url.pathComponents[1]
+
+        switch DeeplinkURLs(rawValue: host) {
+        case .chat:
+            let queryParams = url.queryParameters
+            if let chatModelJson = url.queryParameters["chatModel"],
+               let chatModel = deserializeChatModel(from: chatModelJson) {
+                self.pushChatPath(.chatRoom(chat: ChatModelViewModel(chat: chatModel)))
+            } else {
+                print("something went wrong deserializing the chat model")
+                return
+            }
+        default:
+            print("default deeplink url")
+            return
+        }
+
+    }
 }
