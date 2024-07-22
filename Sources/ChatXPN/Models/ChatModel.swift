@@ -75,19 +75,28 @@ public struct ChatModelViewModel: Identifiable, Equatable, Hashable {
     var lastMessage: ChatMessagePreview { self.chat.lastMessage }
 }
 
-
 func serializeChatModel(_ chatModel: ChatModel) -> String? {
     let encoder = JSONEncoder()
-    if let data = try? encoder.encode(chatModel) {
+    do {
+        let data = try encoder.encode(chatModel)
         return String(data: data, encoding: .utf8)?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+    } catch {
+        print("Failed to encode ChatModel: \(error)")
+        return nil
     }
-    return nil
 }
 
 func deserializeChatModel(from jsonString: String) -> ChatModel? {
     let decoder = JSONDecoder()
-    if let data = jsonString.removingPercentEncoding?.data(using: .utf8) {
-        return try? decoder.decode(ChatModel.self, from: data)
+    guard let decodedString = jsonString.removingPercentEncoding,
+          let data = decodedString.data(using: .utf8) else {
+        print("Failed to decode string: \(jsonString)")
+        return nil
     }
-    return nil
+    do {
+        return try decoder.decode(ChatModel.self, from: data)
+    } catch {
+        print("Failed to decode ChatModel: \(error)")
+        return nil
+    }
 }
