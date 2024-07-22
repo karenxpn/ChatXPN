@@ -176,8 +176,10 @@ extension String: Identifiable {
 extension URL {
     var queryParameters: [String: String] {
         var params = [String: String]()
-        let queryItems = URLComponents(url: self, resolvingAgainstBaseURL: false)?.queryItems
-        queryItems?.forEach { params[$0.name] = $0.value }
+        let queryItems = URLComponents(string: self.absoluteString)?.queryItems
+        queryItems?.forEach {
+            params[$0.name] = $0.value
+        }
         return params
     }
 }
