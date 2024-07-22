@@ -43,7 +43,7 @@ public class ChatViewRouter: AlertViewModel, ObservableObject {
         }
     }
     
-    func handleDeeplink(from url: URL) {
+    public func handleDeeplink(from url: URL) {
         guard let host = url.host else { return }
 
         if host == "notralaw.page.link" {
