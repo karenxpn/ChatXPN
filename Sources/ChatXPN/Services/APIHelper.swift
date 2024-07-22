@@ -10,7 +10,7 @@ import FirebaseFirestore
 import NotraAuth
 
 extension APIHelper {
-    func snapshotListener<T: Codable>(query: Query, completion: @escaping (Result<[T], any Error>) -> ()) {
+    func snapshotListener<T: IdentifiableDocument>(query: Query, completion: @escaping (Result<[T], any Error>) -> ()) {
         query.addSnapshotListener { snapshot, error in
             if let error {
                 DispatchQueue.main.async {
@@ -45,7 +45,7 @@ extension APIHelper {
         }
     }
     
-    func paginatedSnapshotListener<T: Codable>(query: Query, completion: @escaping(Result<([T], QueryDocumentSnapshot?), Error>) -> ()) {
+    func paginatedSnapshotListener<T: IdentifiableDocument>(query: Query, completion: @escaping(Result<([T], QueryDocumentSnapshot?), Error>) -> ()) {
         query.addSnapshotListener { snapshot, error in
             if let error {
                 DispatchQueue.main.async {

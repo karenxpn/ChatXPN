@@ -11,8 +11,19 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 import FirebaseAuth
 
+protocol IdentifiableDocument: Identifiable, Codable {
+    var id: String? { get set }
+}
 
-public struct ChatModel: Identifiable, Codable, Equatable, Hashable {
+extension IdentifiableDocument {
+    init(from document: DocumentSnapshot) throws {
+        self = try document.data(as: Self.self)
+        self.id = document.documentID
+    }
+}
+
+
+public struct ChatModel: IdentifiableDocument, Equatable, Hashable {
     @DocumentID public var id: String?
     var users: [ChatUser]
     var lastMessage: ChatMessagePreview
