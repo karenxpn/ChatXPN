@@ -32,7 +32,7 @@ extension APIHelper {
             
             snapshot?.documents.forEach({ doc in
                 do {
-                    let chat = try doc.data(as: T.self)
+                    let chat = try T(from: doc)
                     results.append(chat)
                 } catch {
                     print(error)
@@ -65,7 +65,7 @@ extension APIHelper {
             var results = [(T)]()
             snapshot?.documents.forEach({ doc in
                 do {
-                    let message = try doc.data(as: T.self)
+                    let message = try T(from: doc)
                     results.append(message)
                 } catch {
                     print(error)
