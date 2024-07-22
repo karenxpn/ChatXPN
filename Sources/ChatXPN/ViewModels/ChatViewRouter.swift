@@ -42,4 +42,5 @@ public class ChatViewRouter: AlertViewModel, ObservableObject {
             self.hasUnreadMessage = hasMessage
         }
     }
+    
 }
