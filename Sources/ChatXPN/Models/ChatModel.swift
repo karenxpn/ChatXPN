@@ -91,9 +91,15 @@ public struct ChatMessagePreview: Identifiable, Codable, Equatable, Hashable {
         self.sentBy = try container.decode(String.self, forKey: .sentBy)
         self.seenBy = try container.decode([String].self, forKey: .seenBy)
         self.status = try container.decode(MessageStatus.self, forKey: .status)
-        let seconds = try container.decode(Int64.self, forKey: .createdAt)
-        let nanoseconds = try container.decode(Int32.self, forKey: .createdAt)
-        self.createdAt = Timestamp(seconds: seconds, nanoseconds: nanoseconds)
+        
+        let createdAtDict = try container.decodeIfPresent([String: Int64].self, forKey: .createdAt)
+        if let dict = createdAtDict {
+            let seconds = dict["seconds"] ?? 0
+            let nanoseconds = dict["nanoseconds"] ?? 0
+            self.createdAt = Timestamp(seconds: seconds, nanoseconds: Int32(nanoseconds))
+        } else {
+            self.createdAt = Timestamp(seconds: 0, nanoseconds: 0)
+        }
     }
 
     public func encode(to encoder: Encoder) throws {
@@ -104,8 +110,8 @@ public struct ChatMessagePreview: Identifiable, Codable, Equatable, Hashable {
         try container.encode(self.sentBy, forKey: .sentBy)
         try container.encode(self.seenBy, forKey: .seenBy)
         try container.encode(self.status, forKey: .status)
-        try container.encode(self.createdAt.seconds, forKey: .createdAt)
-        try container.encode(self.createdAt.nanoseconds, forKey: .createdAt)
+        let createdAtDict: [String: Int32] = ["seconds": Int32(self.createdAt.seconds), "nanoseconds": Int32(self.createdAt.nanoseconds)]
+        try container.encode(createdAtDict, forKey: .createdAt)
     }
 }
 
