@@ -92,12 +92,11 @@ public struct ChatMessagePreview: Identifiable, Codable, Equatable, Hashable {
         self.seenBy = try container.decode([String].self, forKey: .seenBy)
         self.status = try container.decode(MessageStatus.self, forKey: .status)
         
-        let createdAtDict = try container.decodeIfPresent([String: Int64].self, forKey: .createdAt)
-        if let dict = createdAtDict {
-            let seconds = dict["seconds"] ?? 0
-            let nanoseconds = dict["nanoseconds"] ?? 0
-            self.createdAt = Timestamp(seconds: seconds, nanoseconds: Int32(nanoseconds))
+        // Handle createdAt directly as Timestamp
+        if let timestamp = try container.decodeIfPresent(Timestamp.self, forKey: .createdAt) {
+            self.createdAt = timestamp
         } else {
+            // Provide a default value if necessary
             self.createdAt = Timestamp(seconds: 0, nanoseconds: 0)
         }
     }
@@ -110,8 +109,9 @@ public struct ChatMessagePreview: Identifiable, Codable, Equatable, Hashable {
         try container.encode(self.sentBy, forKey: .sentBy)
         try container.encode(self.seenBy, forKey: .seenBy)
         try container.encode(self.status, forKey: .status)
-        let createdAtDict: [String: Int32] = ["seconds": Int32(self.createdAt.seconds), "nanoseconds": Int32(self.createdAt.nanoseconds)]
-        try container.encode(createdAtDict, forKey: .createdAt)
+        
+        // Encode createdAt as Timestamp
+        try container.encode(self.createdAt, forKey: .createdAt)
     }
 }
 
