@@ -56,13 +56,16 @@ public class ChatViewRouter: AlertViewModel, ObservableObject {
 
         switch DeeplinkURLs(rawValue: host) {
         case .chat:
-            let queryParams = url.queryParameters
-            if let chatModelJson = url.queryParameters["chatModel"],
-               let chatModel = deserializeChatModel(from: chatModelJson) {
-                self.pushChatPath(.chatRoom(chat: ChatModelViewModel(chat: chatModel)))
-            } else {
-                print("something went wrong deserializing the chat model")
-                return
+            if DeeplinkURLs(rawValue: destination) == .chat {
+                print("chat link")
+                let queryParams = url.queryParameters
+                if let chatModelJson = url.queryParameters["chatModel"],
+                   let chatModel = deserializeChatModel(from: chatModelJson) {
+                    self.pushChatPath(.chatRoom(chat: ChatModelViewModel(chat: chatModel)))
+                } else {
+                    print("something went wrong deserializing the chat model")
+                    return
+                }
             }
         default:
             print("default deeplink url")
