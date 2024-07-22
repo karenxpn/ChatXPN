@@ -74,3 +74,20 @@ public struct ChatModelViewModel: Identifiable, Equatable, Hashable {
     var users: [ChatUser]               { self.chat.users }
     var lastMessage: ChatMessagePreview { self.chat.lastMessage }
 }
+
+
+func serializeChatModel(_ chatModel: ChatModel) -> String? {
+    let encoder = JSONEncoder()
+    if let data = try? encoder.encode(chatModel) {
+        return String(data: data, encoding: .utf8)?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+    }
+    return nil
+}
+
+func deserializeChatModel(from jsonString: String) -> ChatModel? {
+    let decoder = JSONDecoder()
+    if let data = jsonString.removingPercentEncoding?.data(using: .utf8) {
+        return try? decoder.decode(ChatModel.self, from: data)
+    }
+    return nil
+}
