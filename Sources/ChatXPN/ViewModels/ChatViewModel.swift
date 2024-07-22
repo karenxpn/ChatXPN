@@ -27,6 +27,7 @@ public class ChatViewModel: AlertViewModel, ObservableObject {
             case .failure(let error):
                 self.makeAlert(with: error, message: &self.alertMessage, alert: &self.showAlert)
             case .success(let chats):
+                print(chats.first)
                 self.chats = chats.map(ChatModelViewModel.init)
             }
             
