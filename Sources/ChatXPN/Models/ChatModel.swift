@@ -20,7 +20,7 @@ public struct ChatModel: Identifiable, Codable, Equatable, Hashable {
     var uids: [String]
 
     enum CodingKeys: String, CodingKey {
-        case id = "_id"
+        case id
         case users
         case lastMessage
         case image
