@@ -10,7 +10,7 @@ import FirebaseFirestoreSwift
 import Firebase
 import FirebaseAuth
 
-public struct MessageModel: Codable {
+public struct MessageModel: IdentifiableDocument {
     @DocumentID public var id: String?
     var createdAt: Timestamp
     var type: MessageType
