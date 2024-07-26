@@ -20,7 +20,7 @@ struct CallMessageContent: View {
                 
                 HStack(alignment: .center, spacing: 12) {
                     Image(systemName: "video")
-                        .tint(!message.received ? .white : .primary)
+                        .foregroundStyle(!message.received ? .white : .primary)
                     
                     VStack {
                         TextHelper(text: message.content, color: !message.received ? .white : .primary)
