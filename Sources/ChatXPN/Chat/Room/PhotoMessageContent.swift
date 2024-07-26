@@ -38,7 +38,7 @@ struct PhotoMessageContent: View {
                 
                 if !message.received && message.status != .pending {
                     Image(message.seen ? "read_icon" : "sent_icon", bundle: .module)
-                        .foregroundStyle(Color("messageTime", bundle: .module))
+                        .foregroundStyle(Color("sentRead", bundle: .module))
                         .scaleEffect(1.2)
                 }
             }
