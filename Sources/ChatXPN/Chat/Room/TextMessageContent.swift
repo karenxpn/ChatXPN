@@ -21,7 +21,7 @@ struct TextMessageContent: View {
                 if !message.received {
                     Image(message.seen ? "read_icon" : "sent_icon", bundle: .module)
                         .renderingMode(.template)
-                        .tint(Color("messageTime", bundle: .module))
+                        .foregroundStyle(Color("messageTime", bundle: .module))
                         .scaleEffect(1.2)
                 }
             }
@@ -52,8 +52,7 @@ struct TextMessageContent: View {
                     
                     if !message.received {
                         Image(message.seen ? "read_icon" : "sent_icon", bundle: .module)
-                            .renderingMode(.template)
-                            .tint(Color("messageTime", bundle: .module))
+                            .foregroundStyle(Color("messageTime", bundle: .module))
                             .scaleEffect(1.2)
                     }
                 })
