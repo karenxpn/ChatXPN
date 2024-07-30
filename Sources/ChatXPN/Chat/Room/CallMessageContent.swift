@@ -20,7 +20,7 @@ struct CallMessageContent: View {
                 
                 HStack(alignment: .center, spacing: 12) {
                     Image(systemName: "video")
-                        .tint(!message.received ? .white : .primary)
+                        .foregroundStyle(!message.received ? .white : .primary)
                     
                     VStack {
                         TextHelper(text: message.content, color: !message.received ? .white : .primary)
@@ -43,8 +43,7 @@ struct CallMessageContent: View {
                 
                 if !message.received && message.status != .pending {
                     Image(message.seen ? "read_icon" : "sent_icon", bundle: .module)
-                        .renderingMode(.template)
-                        .tint(Color("messageTime", bundle: .module))
+                        .foregroundStyle(Color("sentRead", bundle: .module))
                         .scaleEffect(1.2)
                 }
             }

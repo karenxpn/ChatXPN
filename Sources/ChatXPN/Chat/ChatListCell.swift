@@ -38,8 +38,7 @@ struct ChatListCell: View {
                     
                     if !chat.isMessageReceived {
                         Image(chat.seen ? "read_icon" : "sent_icon", bundle: .module)
-                            .renderingMode(.template)
-                            .colorMultiply(chat.seen ? Color("turquoise", bundle: .module) : Color("messageTime", bundle: .module))
+                            .foregroundStyle(chat.seen ? Color("turquoise", bundle: .module) : Color("messageTime", bundle: .module))
                     }
                 }
             }.padding(.horizontal, 20)
